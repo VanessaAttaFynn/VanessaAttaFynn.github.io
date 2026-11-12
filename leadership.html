@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leadership — Vanessa Atta-Fynn</title>
+<meta name="description" content="Leadership — Chair of the Abstract Review Committee, GRCW/DCS 2026.">
+<meta name="theme-color" content="#0d0403">
+<link rel="stylesheet" href="assets/style.css?v=6">
+</head>
+<body data-page="leadership" data-title="Leadership">
+
+<div id="loader">
+  <div class="l-top"><span>VAF</span><span>Portfolio — 2026</span></div>
+  <div class="l-mid">
+    <div class="l-label">Initialising network</div>
+    <div class="l-num" id="lnum">000</div>
+  </div>
+  <div class="loader-bar"><i></i></div>
+</div>
+
+<canvas id="gl"></canvas>
+<div class="grain"></div>
+<div class="cur-dot"></div><div class="cur-ring"></div>
+
+<nav>
+  <a href="index.html" class="logo" data-label="Home">VAF<em>.</em></a>
+  <div class="nav-links">
+    <a href="index.html#work" data-label="Work">Work</a>
+<a href="projects.html" data-label="Projects">Projects</a>
+<a href="leadership.html" class=cur data-label="Leadership">Leadership</a>
+<a href="teaching.html" data-label="Teaching">Teaching</a>
+<a href="research.html" data-label="Research">Research</a>
+<a href="#contact" data-label="Contact">Contact</a>
+  </div>
+  <div class="pill"><i></i>Open to new roles</div>
+</nav>
+
+<aside class="hud">
+  <div class="hud-sec"><b id="secnum">01</b> / <span id="sectot">06</span></div>
+  <div class="hud-e"><span class="bolt">↯</span> <b id="energy">0.000</b> kWh <small>spent scrolling</small></div>
+</aside>
+<aside class="dots"><a href="#top"><span>Intro</span></a><a href="#role"><span>The role</span></a><a href="#framework"><span>Framework</span></a><a href="#build"><span>The build</span></a><a href="#reflection"><span>Reflection</span></a><a href="#contact"><span>Contact</span></a></aside>
+
+<main>
+
+<section class="hero phero" id="top" data-s="0">
+  <div class="hero-inner">
+    <a href="index.html" class="back rv" data-label="Home">← Back home</a>
+    <div class="kicker rv">Leadership</div>
+    <h1 class="display mega" data-split>Leading by building <span class="serif">the thing myself.</span></h1>
+    <p class="lede rv">In 2026 I was elected Chair of the Abstract Review Committee for my university's DCS Postgraduate Research Conference — and ended up building the entire system the committee ran on.</p>
+  </div>
+  <div class="scroll-hint rv"><i></i>Scroll</div>
+</section>
+<section class="proj left" id="role" data-s="1">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">01</span> The role</div>
+    <h2 class="display huge" data-split>Elected Chairperson</h2>
+    <div class="prose glass rv"><p>I ran for and won the Chairperson election for the Abstract Review Committee of the GRCW/DCS 2026 postgraduate research conference, with Prince Amofa elected Vice Chairperson alongside me.</p><p>The committee was responsible for reviewing every abstract submitted to the conference across multiple thematic research tracks — from Machine Learning and Data Science to HCI, Networks, and Cybersecurity — before the conference could go ahead.</p></div>
+  </div>
+</section>
+
+<section class="proj right" id="framework" data-s="2">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">02</span> The framework</div>
+    <h2 class="display big2" data-split>Designing how 281 abstracts get reviewed <span class="serif">fairly</span></h2>
+    <div class="prose glass rv"><p>Before any review could happen, I designed the process itself: a multi-stage review framework (Stages 0–4) with fan-out/fan-in assignment logic, so abstracts could be distributed across reviewers by track and then reconciled back into final decisions.</p><p>I wrote this up formally as a Plan of Action, which went through review by my supervising lecturer before the committee started work — and I ran the committee's first meeting to walk everyone through it.</p></div>
+  </div>
+</section>
+
+<section class="proj left" id="build" data-s="3">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">03</span> The build</div>
+    <h2 class="display big2" data-split>When nothing fit, <span class="serif">I built it</span></h2>
+    <div class="prose glass rv"><p>Partway into planning, it became clear that no existing tool matched the review workflow the committee actually needed. So I built <a href="projects.html" data-label="Projects">UGAbstracts</a> — a full Yii2/SQL Server workflow engine with rubric scoring, role-based access, and automatic conflict-of-interest detection — and deployed it myself.</p><p>I chaired the committee, wrote the process it followed, and built the software it ran on, all while personally reviewing 15 abstracts as Chair — alongside a full-time job and an MSc thesis running in parallel.</p></div>
+    <div class="stats"><div class="rv"><b data-count="281">0</b><span>abstracts processed</span></div><div class="rv"><b data-count="7">0</b><span>thematic tracks coordinated</span></div><div class="rv"><b data-count="15">0</b><span>reviewed personally</span></div><div class="rv"><b data-count="1">0</b><span>system built to run it</span></div></div>
+  </div>
+</section>
+
+<section class="proj left" id="reflection" data-s="4">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">04</span> Reflection</div>
+    <h2 class="display big2" data-split>What it actually <span class="serif">took</span></h2>
+    <p class="quote rv">Chairing a committee is a governance job — framework, fairness, meetings, decisions. Building the platform underneath it is an engineering job. Doing both at once meant every gap in the process became a bug I had to fix myself, and every technical constraint became something I had to explain and defend to the committee. That loop — between designing a process and building the tool that enforces it — is the part of this I'd sign up for again.</p>
+  </div>
+</section>
+
+<section class="contact" id="contact" data-s="5">
+  <div class="kicker rv"><span class="idx">05</span> Contact</div>
+  <h2 class="display big" data-split>Open to Systems Developer <span class="o">and ML-adjacent roles</span> — <span class="serif">let's talk.</span></h2>
+  <div class="cgrid three">
+    <a class="rv" href="mailto:vattafynn.work@gmail.com"><small>Email</small><span>vattafynn.work@gmail.com</span></a>
+    <a class="rv" href="https://github.com/VanessaAttaFynn" target="_blank" rel="noopener"><small>GitHub</small><span>github.com/VanessaAttaFynn</span></a>
+    <a class="rv" href="https://linkedin.com/in/vanessa-atta-fynn" target="_blank" rel="noopener"><small>LinkedIn</small><span>linkedin/in/vanessa-atta-fynn</span></a>
+  </div>
+  <footer><span>Tantra Hill, Accra, Ghana</span><span>© 2026 Vanessa Atta-Fynn</span></footer>
+</section>
+</main>
+
+<script src="assets/app.js?v=6"></script>
+</body>
+</html>

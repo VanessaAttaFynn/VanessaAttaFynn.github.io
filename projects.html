@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Vanessa Atta-Fynn</title>
+<meta name="description" content="Projects by Vanessa Atta-Fynn — UGAbstracts, DataForge, applied ML and engineering at NPRA.">
+<meta name="theme-color" content="#0d0403">
+<link rel="stylesheet" href="assets/style.css?v=6">
+</head>
+<body data-page="projects" data-title="Projects">
+
+<div id="loader">
+  <div class="l-top"><span>VAF</span><span>Portfolio — 2026</span></div>
+  <div class="l-mid">
+    <div class="l-label">Initialising network</div>
+    <div class="l-num" id="lnum">000</div>
+  </div>
+  <div class="loader-bar"><i></i></div>
+</div>
+
+<canvas id="gl"></canvas>
+<div class="grain"></div>
+<div class="cur-dot"></div><div class="cur-ring"></div>
+
+<nav>
+  <a href="index.html" class="logo" data-label="Home">VAF<em>.</em></a>
+  <div class="nav-links">
+    <a href="index.html#work" data-label="Work">Work</a>
+<a href="projects.html" class=cur data-label="Projects">Projects</a>
+<a href="leadership.html" data-label="Leadership">Leadership</a>
+<a href="teaching.html" data-label="Teaching">Teaching</a>
+<a href="research.html" data-label="Research">Research</a>
+<a href="#contact" data-label="Contact">Contact</a>
+  </div>
+  <div class="pill"><i></i>Open to new roles</div>
+</nav>
+
+<aside class="hud">
+  <div class="hud-sec"><b id="secnum">01</b> / <span id="sectot">06</span></div>
+  <div class="hud-e"><span class="bolt">↯</span> <b id="energy">0.000</b> kWh <small>spent scrolling</small></div>
+</aside>
+<aside class="dots"><a href="#top"><span>Intro</span></a><a href="#ugabstracts"><span>UGAbstracts</span></a><a href="#dataforge"><span>DataForge</span></a><a href="#ml"><span>Applied ML</span></a><a href="#tenant"><span>Tenant app</span></a><a href="#npra"><span>NPRA</span></a><a href="#contact"><span>Contact</span></a></aside>
+
+<main>
+
+<section class="hero phero" id="top" data-s="0">
+  <div class="hero-inner">
+    <a href="index.html" class="back rv" data-label="Home">← Back home</a>
+    <div class="kicker rv">Projects</div>
+    <h1 class="display mega" data-split>Selected &amp; full body <span class="serif">of work.</span></h1>
+    <p class="lede rv">From a national regulator's compliance platform to a from-scratch research platform built for my university — the systems I've designed, built, and shipped, plus the ML work alongside it.</p>
+  </div>
+  <div class="scroll-hint rv"><i></i>Scroll</div>
+</section>
+<section class="proj left" id="ugabstracts" data-s="1">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">01</span> Production system, built solo</div>
+    <h2 class="display huge" data-split>UGAbstracts</h2>
+    <div class="tags rv"><span>Yii2</span><span>PHP 8.4</span><span>SQL Server</span><span>IIS</span><span>Tailscale Funnel</span></div>
+    <div class="prose glass rv"><p>The abstract review system built for the University of Ghana's DCS Postgraduate Research Conference (GRCW/DCS 2026). I was elected Chair of the committee that would use it — and when nothing existing fit the review workflow we needed, I built it myself.</p><p>It's a full workflow engine: rubric-based scoring, role-based access control, and automatic conflict-of-interest detection running across a five-stage review pipeline (Stages 0–4, with fan-out/fan-in assignment logic across thematic tracks). It runs on IIS, deployed to a VPS and exposed publicly via Tailscale Funnel.</p><p>Before opening it up to real reviewers, I hunted down and fixed a run of production-grade bugs under deadline pressure: a workflow conflict-resolution bug, intermittent PHP session failures, a unique index silently blocking legitimate null inserts, and an IIS hostname-binding issue that only showed up post-deploy.</p><p>It's the first system I've taken solo from architecture through to a live server handling real submissions — and I did it while also chairing the committee and personally reviewing abstracts. More on that side of it on the <a href="leadership.html" data-label="Leadership">Leadership page</a>.</p></div>
+    <div class="stats"><div class="rv"><b data-count="281">0</b><span>real submissions processed</span></div><div class="rv"><b data-count="7">0</b><span>thematic review tracks</span></div><div class="rv"><b data-count="15">0</b><span>abstracts personally reviewed as Chair</span></div><div class="rv"><b data-count="5">0</b><span>stage review pipeline</span></div></div>
+  </div>
+</section>
+
+<section class="proj right" id="dataforge" data-s="2">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">02</span> Full platform, built for my university</div>
+    <h2 class="display huge" data-split>DataForge</h2>
+    <div class="tags rv"><span>Yii2</span><span>SQL Server</span><span>Windows VPS</span><span>Cloudflare Tunnel</span></div>
+    <div class="prose glass rv"><p>A Kaggle-style competitions and research platform, built from scratch for my university so students can create, discover, and register for challenges and hackathons — something that previously only existed as scattered WhatsApp messages and department flyers.</p><p>Under the hood it's architected as a blog system: every post carries a type — dataset, notebook, competition, or discussion — which keeps one clean data model powering four very different experiences. Datasets and discussions publish immediately (flagged unverified until reviewed); competitions and hackathons require approval first, since they carry real commitments to other students.</p><p>Teams are their own standalone entity: consent-based (invite and accept, no admin gatekeeping), able to register for multiple competitions independently, and automatically disbanded once membership hits zero. Each competition's creator sets its own submission cap, team-size limit, and whether it accepts individuals, teams, or both.</p><p>Notebooks are a static, read-only viewer for real uploaded .ipynb files — parsed and rendered code cells, markdown, and cached outputs, filterable by field, topic, and tags. Datasets preview CSVs directly in-browser; other file types show creator-supplied summary statistics instead.</p><p>Access is verification-gated: students authenticate with their university email, then submit a student ID and proof-of-registration document for admin approval before they can create or join anything. Staff accounts (on the university's staff domain) are auto-assigned moderator privileges at signup.</p><p>The whole thing is deployed on a Windows VPS matching my exact dev stack (IIS, SQL Server, PHP) — deliberately, so I wasn't re-fighting a fresh round of platform bugs right before the deadline, with grading running unattended and asynchronously. Public access runs through a Cloudflare Tunnel on the VPS itself, giving a stable URL that survives restarts.</p></div>
+  </div>
+</section>
+
+<section class="proj left" id="ml" data-s="3">
+  <div class="col">
+    <div class="mlcard glass tilt rv">
+      <div class="kicker"><span class="idx">03</span> Applied ML</div>
+      <h2 class="display mid" data-split>VLM Image Captioning</h2>
+      <div class="tags rv"><span>EfficientNetB0</span><span>LSTM</span><span>Bahdanau Attention</span></div>
+      <p>An image-captioning model pairing an EfficientNetB0 encoder with an LSTM decoder built entirely from scratch, using Bahdanau attention so the decoder learns which region of the image to focus on for each word it generates. Reached a BLEU-4 score of 0.179.</p>
+      <div class="metric">BLEU-4 <b>0.179</b></div>
+    </div>
+    <div class="mlcard glass tilt rv">
+      <div class="kicker"><span class="idx">04</span> Applied ML</div>
+      <h2 class="display mid" data-split>Loan Default Prediction</h2>
+      <div class="tags rv"><span>Random Forest</span><span>BorderlineSMOTE</span></div>
+      <p>A classification model for predicting loan default, using BorderlineSMOTE rather than naive oversampling to address severe class imbalance near the decision boundary specifically. Achieved a ROC-AUC of 0.910.</p>
+      <div class="metric">ROC-AUC <b>0.910</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="proj right" id="tenant" data-s="4">
+  <div class="col">
+    <div class="badge rv">In progress · learning project</div>
+    <div class="kicker rv"><span class="idx">05</span> Personal project</div>
+    <h2 class="display huge" data-split>Tenant Management App</h2>
+    <div class="tags rv"><span>Django</span><span>SQLite</span><span>Python</span></div>
+    <div class="prose glass rv"><p>A management-only app (no client-facing side) for tracking tenants across a 3-room rental property, branded for my property under Fynn's Properties. It's also a deliberate excuse to properly learn Python and Django outside of a PHP-heavy day job.</p><p>It generates downloadable, printable tenant agreements and receipts — signed physically, then filed against the tenant — and automates email notifications via Gmail. Part of the scope is also digitizing years of previous paper records into the same system.</p></div>
+  </div>
+</section>
+
+<section class="proj left" id="npra" data-s="5">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">06</span> Day job, in production</div>
+    <h2 class="display huge" data-split>Engineering at NPRA</h2>
+    <p class="sub rv">Selected work on NPRA_RBSS, the regulatory compliance platform I maintain onsite at Ghana's National Pensions Regulatory Authority.</p>
+    <ul class="bullets glass rv">
+      <li>Designed and built the Formal Transfer of Pension Scheme Assets module: a multi-tab, multi-stage review workflow with per-tab approvals and admin-configurable stage logic.</li>
+      <li>Built a database-driven contextual help/manual widget system, plus a Driver.js-based guided onboarding walkthrough for new users.</li>
+      <li>Migrated SharePoint file-browsing integration from NTLM to OAuth2/Microsoft Graph.</li>
+      <li>Diagnosed and fixed a run of production bugs: a no-skip policy bug counting draft submissions as valid prior submissions, a period-not-set error on a specific return, a null-lookup bug in merger applications needing a two-step lookup, and a JS bug where review buttons always fired the wrong stage ID.</li>
+      <li>Fixed broadcast email failures by building RFC 2822-compliant address validation and failure logging.</li>
+      <li>Maintain Power BI dashboards and manage Git/deployment across local, server, and Azure DevOps environments.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="contact" id="contact" data-s="6">
+  <div class="kicker rv"><span class="idx">07</span> Contact</div>
+  <h2 class="display big" data-split>Open to Systems Developer <span class="o">and ML-adjacent roles</span> — <span class="serif">let's talk.</span></h2>
+  <div class="cgrid three">
+    <a class="rv" href="mailto:vattafynn.work@gmail.com"><small>Email</small><span>vattafynn.work@gmail.com</span></a>
+    <a class="rv" href="https://github.com/VanessaAttaFynn" target="_blank" rel="noopener"><small>GitHub</small><span>github.com/VanessaAttaFynn</span></a>
+    <a class="rv" href="https://linkedin.com/in/vanessa-atta-fynn" target="_blank" rel="noopener"><small>LinkedIn</small><span>linkedin/in/vanessa-atta-fynn</span></a>
+  </div>
+  <footer><span>Tantra Hill, Accra, Ghana</span><span>© 2026 Vanessa Atta-Fynn</span></footer>
+</section>
+</main>
+
+<script src="assets/app.js?v=6"></script>
+</body>
+</html>

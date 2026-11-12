@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research — Vanessa Atta-Fynn</title>
+<meta name="description" content="Research — a priori prediction of neural network training energy: systematic review, CAL-ENERGY and CAL-TRANSFER.">
+<meta name="theme-color" content="#0d0403">
+<link rel="stylesheet" href="assets/style.css?v=6">
+</head>
+<body data-page="research" data-title="Research">
+
+<div id="loader">
+  <div class="l-top"><span>VAF</span><span>Portfolio — 2026</span></div>
+  <div class="l-mid">
+    <div class="l-label">Initialising network</div>
+    <div class="l-num" id="lnum">000</div>
+  </div>
+  <div class="loader-bar"><i></i></div>
+</div>
+
+<canvas id="gl"></canvas>
+<div class="grain"></div>
+<div class="cur-dot"></div><div class="cur-ring"></div>
+
+<nav>
+  <a href="index.html" class="logo" data-label="Home">VAF<em>.</em></a>
+  <div class="nav-links">
+    <a href="index.html#work" data-label="Work">Work</a>
+<a href="projects.html" data-label="Projects">Projects</a>
+<a href="leadership.html" data-label="Leadership">Leadership</a>
+<a href="teaching.html" data-label="Teaching">Teaching</a>
+<a href="research.html" class=cur data-label="Research">Research</a>
+<a href="#contact" data-label="Contact">Contact</a>
+  </div>
+  <div class="pill"><i></i>Open to new roles</div>
+</nav>
+
+<aside class="hud">
+  <div class="hud-sec"><b id="secnum">01</b> / <span id="sectot">06</span></div>
+  <div class="hud-e"><span class="bolt">↯</span> <b id="energy">0.000</b> kWh <small>spent scrolling</small></div>
+</aside>
+<aside class="dots"><a href="#top"><span>Intro</span></a><a href="#question"><span>The question</span></a><a href="#review"><span>Systematic review</span></a><a href="#calenergy"><span>CAL-ENERGY</span></a><a href="#caltransfer"><span>CAL-TRANSFER</span></a><a href="#next"><span>What's next</span></a><a href="#contact"><span>Contact</span></a></aside>
+
+<main>
+
+<section class="hero phero" id="top" data-s="0">
+  <div class="hero-inner">
+    <a href="index.html" class="back rv" data-label="Home">← Back home</a>
+    <div class="kicker rv">Research</div>
+    <h1 class="display mega" data-split>Predicting energy <span class="serif">before you spend it.</span></h1>
+    <p class="lede rv">How much energy will it take to train a neural network — before you train it? That question started as my MSc thesis at the University of Ghana, defended in September 2026, and has grown into a line of papers with my supervisor, Prof. Kofi Sarpong Adu-Manu.</p>
+  </div>
+  <div class="scroll-hint rv"><i></i>Scroll</div>
+</section>
+<section class="proj left" id="question" data-s="1">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">01</span> The question</div>
+    <h2 class="display big2" data-split>Why predict it <span class="serif">at all?</span></h2>
+    <div class="prose glass rv"><p>Most energy figures for deep learning are measured after training has already happened. That's useful for reporting, but it doesn't help someone deciding whether an experiment is worth running in the first place.</p><p>That decision matters most where compute is limited by power, not just budget. A planned geothermal-powered AI data center in Kenya, announced in 2024, had stalled by 2026 over grid capacity — a reminder that for many researchers on the continent, energy is the real constraint. An a priori predictor gives them an estimate from the model's design alone, before a single GPU-hour is spent.</p></div>
+    <div class="stats"><div class="rv"><b data-count="2">0</b><span>papers under review</span></div><div class="rv"><b data-count="2">0</b><span>datasets: BUTTER-E &amp; EC-NAS</span></div><div class="rv"><b data-count="4">0</b><span>research questions</span></div><div class="rv"><b data-count="2">0</b><span>architecture families</span></div></div>
+  </div>
+</section>
+
+<section class="proj right" id="review" data-s="2">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">02</span> Paper 01 — Systematic review</div>
+    <h2 class="display big2" data-split>Mapping what we can predict <span class="serif">and what we can't</span></h2>
+    <div class="paper wide rv"><div class="pidx">Paper 01</div><p>"A Priori Energy Prediction for Neural Network Training: A Systematic Review of Methods, Measurement Fidelity, and Generalizability"</p><span class="status">Under review</span> <span class="venue">Sustainable Computing: Informatics and Systems</span></div>
+    <p class="sub rv">A PRISMA 2020 systematic review of methods that predict neural network training energy before training — how they're built, how reliably their ground truth is measured, and how far their results carry to new models and hardware.</p>
+    <div class="findings">
+      <div class="glass rv"><i>01</i><b>Inference, not training</b><span>Most existing a priori predictors estimate inference energy. Very few target training.</span></div>
+      <div class="glass rv"><i>02</i><b>CNNs dominate</b><span>The literature is concentrated on convolutional networks, leaving other families thinly covered.</span></div>
+      <div class="glass rv"><i>03</i><b>Two design camps</b><span>Predictors split between layer-wise decomposition and whole-architecture regression.</span></div>
+      <div class="glass rv"><i>04</i><b>Generalization is untested</b><span>Few studies check whether a predictor still holds on an architecture family it wasn't trained on.</span></div>
+    </div>
+    <p class="note rv"><b>Measurement fidelity:</b> software power meters can underestimate wall-socket energy by 20–30% (Fischer et al.) — so the ground truth many predictors learn from is itself biased.</p>
+  </div>
+</section>
+
+<section class="proj left" id="calenergy" data-s="3">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">03</span> Paper 02 — Prediction framework</div>
+    <h2 class="display huge" data-split>CAL-ENERGY</h2>
+    <div class="paper wide rv"><div class="pidx">Paper 02</div><p>"CAL-ENERGY: Calibration- and Domain-Aware A Priori Prediction of Neural Network Training Energy"</p><span class="status">Under review</span> <span class="venue">Sustainable Computing: Informatics and Systems</span></div>
+    <div class="eq glass rv"><div class="eq-f">E <em>=</em> P <em>×</em> D</div><p>Instead of predicting energy directly, CAL-ENERGY predicts average power and training duration separately, then recomposes them. Splitting the two lets a known measurement-bias correction be applied to power alone — where the bias actually lives.</p></div>
+    <div class="prose glass rv"><p>The model works from a family-agnostic feature set — parameter count, depth, FLOPs, batch size, epochs and a hardware-utilization proxy — so the same predictor applies to both MLPs (BUTTER-E) and CNNs (EC-NAS) without a layer-by-layer encoding.</p><p>Its second component, CAL-GATE, is an applicability check: it flags a prediction as untrustworthy when a request falls outside the model's training support, measured by nearest-neighbor distance to calibration data, or involves an unseen architecture family or hardware.</p></div>
+    <div class="label rv" style="margin-top:40px">Research questions</div>
+    <div class="rqs">
+      <div class="rv"><i>RQ1</i><b>Generalization</b><span>Train on one architecture family, test on the withheld other.</span></div>
+      <div class="rv"><i>RQ2</i><b>Transferability</b><span>Train on one GPU class, test on others.</span></div>
+      <div class="rv"><i>RQ3</i><b>Bias correction</b><span>Does correcting measurement bias improve pooling across datasets?</span></div>
+      <div class="rv"><i>RQ4</i><b>Decomposition</b><span>Does predicting power and duration separately beat predicting energy directly?</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="proj right" id="caltransfer" data-s="4">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">04</span> Paper 03 — In preparation</div>
+    <h2 class="display huge" data-split>CAL-TRANSFER</h2>
+    <div class="paper wide rv"><div class="pidx">Paper 03</div><p>"Few-shot cross-GPU calibration of training-energy prediction"</p><span class="status alt">In preparation</span></div>
+    <p class="quote rv">When a predictor moves to a new GPU, how few measured runs does it take to recalibrate it?</p>
+  </div>
+</section>
+
+<section class="proj left" id="next" data-s="5">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">05</span> What's next</div>
+    <h2 class="display big2" data-split>Better data <span class="serif">for better predictions</span></h2>
+    <div class="groups">
+      <div class="group glass tilt rv"><div class="badge">In progress</div><h3>A transferability dataset</h3><p>Building a dataset to test CAL-ENERGY's cross-hardware and cross-architecture claims empirically. Architecture families are chosen by evidence of how they consume energy — not at random — and the shared features are the ones that drive energy most.</p></div>
+      <div class="group glass tilt rv"><div class="badge alt">Planned</div><h3>A data-limitations audit</h3><p>An audit of public neural-network energy datasets: what they skew toward (often CO₂ estimates), and which fields they're missing that would explain how components drive energy.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact" data-s="6">
+  <div class="kicker rv"><span class="idx">06</span> Contact</div>
+  <h2 class="display big" data-split>Open to Systems Developer <span class="o">and ML-adjacent roles</span> — <span class="serif">let's talk.</span></h2>
+  <div class="cgrid three">
+    <a class="rv" href="mailto:vattafynn.work@gmail.com"><small>Email</small><span>vattafynn.work@gmail.com</span></a>
+    <a class="rv" href="https://github.com/VanessaAttaFynn" target="_blank" rel="noopener"><small>GitHub</small><span>github.com/VanessaAttaFynn</span></a>
+    <a class="rv" href="https://linkedin.com/in/vanessa-atta-fynn" target="_blank" rel="noopener"><small>LinkedIn</small><span>linkedin/in/vanessa-atta-fynn</span></a>
+  </div>
+  <footer><span>Tantra Hill, Accra, Ghana</span><span>© 2026 Vanessa Atta-Fynn</span></footer>
+</section>
+</main>
+
+<script src="assets/app.js?v=6"></script>
+</body>
+</html>
