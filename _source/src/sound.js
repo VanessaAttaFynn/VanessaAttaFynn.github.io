@@ -2,7 +2,12 @@
    Off by default; the visitor turns it on with the toggle. The choice is remembered across pages. */
 
 const KEY = 'vaf-sound';
-const VOL = 1.9; // overall loudness
+const VOL = 1.9; // overall loudness of the generated sounds
+// Background music: drop an MP3 at assets/music.mp3 and it replaces the generated hum.
+// If the file isn't there, the generated hum is used instead.
+const MUSIC_SRC = 'assets/music.mp3';
+const MUSIC_VOL = 0.45; // 0..1 — background music loudness
+const TKEY = 'vaf-music-t';
 // one chord per section (Hz): calm, slightly minor; the pad glides between them as you scroll
 const CHORDS = [
   [110.0, 164.81, 220.0, 261.63],   // A  (Am)
@@ -16,7 +21,36 @@ const CHORDS = [
 ];
 
 export function createSound() {
-  let ctx = null, master, pad, padFilter, voices = [], air, reverb, on = false, section = 0;
+  let ctx = null, master, bg, pad, padFilter, voices = [], air, reverb, on = false, section = 0;
+
+  /* ---- background music (MP3), played with a plain <audio> so it also works when opened from disk ---- */
+  const music = new Audio();
+  let musicOK = null; // null = still checking, true = file found, false = no file
+  music.loop = true; music.preload = 'auto'; music.volume = 0;
+  music.addEventListener('canplay', () => { if (musicOK !== true) { musicOK = true; useMusic(true); } });
+  music.addEventListener('error', () => { musicOK = false; useMusic(false); });
+  try { const t = parseFloat(sessionStorage.getItem(TKEY)); if (t > 0) music.addEventListener('loadedmetadata', () => { try { music.currentTime = t % (music.duration || t + 1); } catch (e) { /* ignore */ } }, { once: true }); } catch (e) { /* ignore */ }
+  music.src = MUSIC_SRC;
+  let fadeRAF = 0;
+  function fadeMusic(target, dur) {
+    cancelAnimationFrame(fadeRAF);
+    const v0 = music.volume, t0 = performance.now();
+    const step = () => {
+      const p = Math.min((performance.now() - t0) / (dur * 1000), 1);
+      music.volume = Math.max(0, Math.min(1, v0 + (target - v0) * p));
+      if (p < 1) fadeRAF = requestAnimationFrame(step); else if (target === 0) music.pause();
+    };
+    step();
+  }
+  // play the MP3; if it can't start (bad/oversized file, blocked), bring the generated hum back so it's never silent
+  async function playMusic() {
+    if (musicOK === false) return;
+    try { await music.play(); fadeMusic(MUSIC_VOL, 2.2); if (ctx && bg) bg.gain.setTargetAtTime(0, ctx.currentTime, 0.3); }
+    catch (e) { return; }
+  }
+  function useMusic(yes) { if (yes && on && ctx && ctx.state === 'running') playMusic(); }
+  function saveTime() { try { if (!music.paused) sessionStorage.setItem(TKEY, String(music.currentTime)); } catch (e) { /* ignore */ } }
+  addEventListener('pagehide', saveTime);
   try { on = localStorage.getItem(KEY) === '1'; } catch (e) { /* storage blocked */ }
 
   function impulse(seconds = 3.2, decay = 2.6) {
@@ -41,28 +75,9 @@ export function createSound() {
     const wet = ctx.createGain(); wet.gain.value = 0.55;
     reverb.connect(wet).connect(master);
 
-    // ambient pad: detuned oscillators -> slow-moving lowpass
-    padFilter = ctx.createBiquadFilter(); padFilter.type = 'lowpass'; padFilter.frequency.value = 700; padFilter.Q.value = 0.6;
-    pad = ctx.createGain(); pad.gain.value = 0.11;
-    padFilter.connect(pad); pad.connect(master); pad.connect(reverb);
-    const lfo = ctx.createOscillator(), lfoAmt = ctx.createGain();
-    lfo.frequency.value = 0.07; lfoAmt.gain.value = 260; lfo.connect(lfoAmt).connect(padFilter.frequency); lfo.start();
-    CHORDS[0].forEach((f, i) => {
-      ['sine', 'triangle'].forEach((type, j) => {
-        const o = ctx.createOscillator(), g = ctx.createGain(), p = ctx.createStereoPanner();
-        o.type = type; o.frequency.value = f; o.detune.value = (j ? 7 : -7) + (i - 1.5) * 2;
-        g.gain.value = (type === 'sine' ? 0.22 : 0.08) / (1 + i * 0.35);
-        p.pan.value = (i % 2 ? 0.35 : -0.35) * (j ? -1 : 1);
-        o.connect(g).connect(p).connect(padFilter); o.start();
-        voices.push({ o, i });
-      });
-    });
-
-    // soft "air": filtered noise underneath
-    const n = ctx.createBufferSource(); n.buffer = noiseBuffer(4); n.loop = true;
-    const nf = ctx.createBiquadFilter(); nf.type = 'bandpass'; nf.frequency.value = 900; nf.Q.value = 0.4;
-    air = ctx.createGain(); air.gain.value = 0.012;
-    n.connect(nf).connect(air).connect(master); air.connect(reverb); n.start();
+    // No generated background any more: the only background sound is assets/music.mp3.
+    // bg is kept as a silent bus so the rest of the code stays simple.
+    bg = ctx.createGain(); bg.gain.value = 0; bg.connect(master);
 
     setSection(section, true);
   }
@@ -130,7 +145,7 @@ export function createSound() {
 
   // scroll speed opens the filter a little
   function scrollVelocity(v) {
-    if (!ctx || !on) return;
+    if (!ctx || !on || !padFilter) return;
     padFilter.frequency.setTargetAtTime(700 + Math.min(Math.abs(v) * 40, 1600), ctx.currentTime, 0.4);
   }
 
@@ -138,12 +153,13 @@ export function createSound() {
     if (!ctx) build();
     if (ctx.state !== 'running') { try { await ctx.resume(); } catch (e) { /* needs a gesture */ } }
     fadeTo(VOL, 1.6);
+    playMusic();
   }
   function setOn(v) {
     on = v;
     try { localStorage.setItem(KEY, v ? '1' : '0'); } catch (e) { /* ignore */ }
     document.body.classList.toggle('sound-on', on);
-    if (on) enable(); else fadeTo(0, 0.6);
+    if (on) enable(); else { fadeTo(0, 0.6); saveTime(); fadeMusic(0, 0.6); }
   }
 
   // if it was on during the last page, start as soon as the browser allows (first click / key)
@@ -159,6 +175,6 @@ export function createSound() {
     get on() { return on; },
     toggle() { setOn(!on); if (on) setTimeout(() => tick(false), 60); },
     setSection, tick, whoosh, loaderProgress, scrollVelocity,
-    leave() { if (on && ctx) { whoosh(false); fadeTo(0, 0.9); } },
+    leave() { saveTime(); if (on && ctx) { whoosh(false); fadeTo(0, 0.9); fadeMusic(0, 0.7); } },
   };
 }

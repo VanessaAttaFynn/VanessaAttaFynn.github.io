@@ -196,3 +196,116 @@ export function tree(N) {
     return [c[0] + d[0] * r, c[1] + d[1] * r * 0.8, c[2] + d[2] * r * 0.6];
   });
 }
+
+/* fantasy castle: walls with battlements, an arched gate, round towers with pointed roofs and flags */
+export function castle(N) {
+  const segs = [], y0 = -1.9;
+  // towers: [x, z, radius, height]
+  const towers = [[-2.3, 0, 0.42, 2.4], [2.3, 0, 0.42, 2.4], [-0.95, -0.5, 0.36, 3.1], [0.95, -0.5, 0.36, 3.1], [0, -0.9, 0.5, 3.9]];
+  // curtain wall between outer towers
+  const wallH = 1.5, wz = 0.25;
+  segs.push([[-2.3, y0, wz], [2.3, y0, wz]], [[-2.3, y0 + wallH, wz], [2.3, y0 + wallH, wz]]);
+  for (let k = 0; k < 14; k++) { // battlements along the wall top
+    const x = -2.05 + k * 0.315, y = y0 + wallH;
+    segs.push([[x, y, wz], [x, y + 0.18, wz]], [[x, y + 0.18, wz], [x + 0.16, y + 0.18, wz]], [[x + 0.16, y + 0.18, wz], [x + 0.16, y, wz]]);
+  }
+  // arched gate
+  const gate = [];
+  for (let k = 0; k <= 16; k++) { const a = Math.PI * k / 16; gate.push([Math.cos(a) * 0.42, y0 + 0.75 + Math.sin(a) * 0.42, wz]); }
+  segs.push([[-0.42, y0, wz], gate[16]], [[0.42, y0, wz], gate[0]]);
+  for (let k = 0; k < 16; k++) segs.push([gate[k], gate[k + 1]]);
+  // windows on the keep
+  [[-0.14, 1.3], [0.14, 1.3], [0, 2.1]].forEach(([x, y]) => segs.push(...[[[x - 0.07, y0 + y, -0.4], [x + 0.07, y0 + y, -0.4]], [[x - 0.07, y0 + y + 0.22, -0.4], [x + 0.07, y0 + y + 0.22, -0.4]], [[x - 0.07, y0 + y, -0.4], [x - 0.07, y0 + y + 0.22, -0.4]], [[x + 0.07, y0 + y, -0.4], [x + 0.07, y0 + y + 0.22, -0.4]]]));
+  // flags on top of each roof
+  towers.forEach(([x, z, r, h]) => { const top = y0 + h + r * 2.2; segs.push([[x, top, z], [x, top + 0.35, z]], [[x, top + 0.35, z], [x + 0.25, top + 0.27, z]], [[x + 0.25, top + 0.27, z], [x, top + 0.2, z]]); });
+  const s = segSampler(segs);
+  const tw = towers.map(([, , r, h]) => r * h), twTot = tw.reduce((a, b) => a + b, 0);
+  return out(N, () => {
+    const q = Math.random();
+    if (q < 0.5) { // tower walls + cone roofs
+      let p = Math.random() * twTot, k = 0; while (p > tw[k]) { p -= tw[k]; k++; }
+      const [x, z, r, h] = towers[k], a = rand(0, Math.PI * 2);
+      if (Math.random() < 0.68) { const y = rand(y0, y0 + h); return [x + Math.cos(a) * r, y, z + Math.sin(a) * r]; }
+      const t = Math.random(), rr = (r + 0.1) * (1 - t);                       // pointed roof, slightly overhanging
+      return [x + Math.cos(a) * rr, y0 + h + t * r * 2.2, z + Math.sin(a) * rr];
+    }
+    if (q < 0.57) return [rand(-2.3, 2.3), rand(y0, y0 + wallH), wz + gauss() * 0.01];  // faint wall fill
+    return s(0.022);
+  });
+}
+
+/* a seedling 🌱: soil mound, curved stem, two leaves */
+export function sprout(N) {
+  // stem: gentle S-curve from soil to the leaf joint
+  const stem = (t) => [Math.sin(t * Math.PI) * 0.18, -1.6 + t * 2.3, 0];
+  // leaf outline: a pointed oval from the joint outward, tilted up
+  function leaf(side) {
+    const base = stem(1), len = 1.9, wid = 0.75, ang = side > 0 ? 0.42 : Math.PI - 0.42;
+    return (u, v) => { // u along leaf 0..1, v across -1..1
+      const w = Math.sin(Math.PI * u) * wid * Math.pow(1 - u, 0.15), lx = u * len, ly = v * w * 0.5 + Math.sin(u * Math.PI) * 0.25;
+      return [base[0] + lx * Math.cos(ang) - ly * Math.sin(ang), base[1] + lx * Math.sin(ang) + ly * Math.cos(ang), v * 0.08 * (1 - u)];
+    };
+  }
+  const L = leaf(1), R = leaf(-1);
+  return out(N, () => {
+    const q = Math.random();
+    if (q < 0.14) { const t = Math.random(), p = stem(t), a = rand(0, Math.PI * 2); return [p[0] + Math.cos(a) * 0.06, p[1], Math.sin(a) * 0.06]; }
+    if (q < 0.74) { // leaves: outline + midrib + light fill
+      const f = Math.random() < 0.5 ? L : R, u = Math.random(), r = Math.random();
+      const v = r < 0.45 ? (Math.random() < 0.5 ? -1 : 1) : r < 0.6 ? 0 : rand(-1, 1);
+      const p = f(u, v); return [p[0] + gauss() * 0.015, p[1] + gauss() * 0.015, p[2]];
+    }
+    // soil mound
+    const x = rand(-1.6, 1.6), h = 0.45 * Math.pow(Math.max(0, 1 - (x / 1.6) ** 2), 1.2), z = rand(-0.6, 0.6) * (1 - Math.abs(x) / 1.6);
+    return Math.random() < 0.55 ? [x, -1.75 + h + gauss() * 0.02, z * 0.4] : [x, -1.75 + Math.random() * h, z];
+  });
+}
+
+/* a smartphone: rounded body, screen with app tiles, notch and home bar (PDE mobile app) */
+export function phone(N) {
+  const W = 2.3, H = 4.5, R = 0.38, segs = [];
+  const rr = (w, h, r, z) => { // rounded rectangle outline at depth z
+    const s = [], k = 6;
+    const corners = [[w / 2 - r, h / 2 - r, 0], [-w / 2 + r, h / 2 - r, Math.PI / 2], [-w / 2 + r, -h / 2 + r, Math.PI], [w / 2 - r, -h / 2 + r, 1.5 * Math.PI]];
+    const pts = [];
+    corners.forEach(([cx, cy, a0]) => { for (let i = 0; i <= k; i++) { const a = a0 + (i / k) * Math.PI / 2; pts.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r, z]); } });
+    for (let i = 0; i < pts.length; i++) s.push([pts[i], pts[(i + 1) % pts.length]]);
+    return s;
+  };
+  segs.push(...rr(W, H, R, 0.12), ...rr(W, H, R, -0.12), ...rr(W - 0.22, H - 0.22, R * 0.8, 0.13));
+  segs.push([[-0.28, H / 2 - 0.26, 0.13], [0.28, H / 2 - 0.26, 0.13]]);       // notch
+  segs.push([[-0.42, -H / 2 + 0.24, 0.13], [0.42, -H / 2 + 0.24, 0.13]]);    // home bar
+  // app tiles: 3 x 4 grid of small rounded squares
+  for (let r = 0; r < 4; r++) for (let c = 0; c < 3; c++) segs.push(...rr(0.42, 0.42, 0.1, 0.13).map(([a, b]) => [[a[0] + (c - 1) * 0.62, a[1] + 1.15 - r * 0.62, a[2]], [b[0] + (c - 1) * 0.62, b[1] + 1.15 - r * 0.62, b[2]]]));
+  // a wide card at the bottom of the screen
+  segs.push(...rr(1.7, 0.55, 0.14, 0.13).map(([a, b]) => [[a[0], a[1] - 1.45, a[2]], [b[0], b[1] - 1.45, b[2]]]));
+  const s = segSampler(segs);
+  return out(N, () => (Math.random() < 0.9 ? s(0.018) : [rand(-W / 2 + 0.15, W / 2 - 0.15), rand(-H / 2 + 0.15, H / 2 - 0.15), 0.13]));
+}
+
+/* graduation cap: square board seen at an angle, skull cap underneath, button and hanging tassel */
+export function gradCap(N) {
+  const segs = [], S = 2.4, top = 0.55;
+  const c = [[-S, top, 0], [0, top + 0.12, S * 0.62], [S, top, 0], [0, top - 0.12, -S * 0.62]]; // diamond board
+  for (let k = 0; k < 4; k++) { const a = c[k], b = c[(k + 1) % 4]; segs.push([a, b], [[a[0], a[1] - 0.12, a[2]], [b[0], b[1] - 0.12, b[2]]], [a, [a[0], a[1] - 0.12, a[2]]]); }
+  // tassel: from the button to a corner, then hanging down
+  const btn = [0, top + 0.06, 0], corner = [S * 0.92, top - 0.02, 0.05], hang = [S * 0.92, top - 1.5, 0.05];
+  segs.push([btn, corner], [corner, hang]);
+  for (let k = 0; k < 7; k++) segs.push([hang, [hang[0] + (k - 3) * 0.05, hang[1] - 0.45, hang[2] + (k % 2) * 0.05]]); // fringe
+  const s = segSampler(segs);
+  return out(N, () => {
+    const q = Math.random();
+    if (q < 0.3) { // board surface
+      const u = Math.random(), v = Math.random();
+      const p = [c[0][0] + (c[1][0] - c[0][0]) * u + (c[3][0] - c[0][0]) * v, c[0][1] + (c[1][1] - c[0][1]) * u + (c[3][1] - c[0][1]) * v, c[0][2] + (c[1][2] - c[0][2]) * u + (c[3][2] - c[0][2]) * v];
+      return [p[0] + (Math.random() < 0.5 ? S : 0) * 0, p[1], p[2]];
+    }
+    if (q < 0.5) { // skull cap: a short rounded band under the board
+      const a = rand(0, Math.PI * 2), h = rand(0, 1);
+      const r = 1.2 * (1 - 0.12 * h * h);
+      return [Math.cos(a) * r, top - 0.15 - h * 0.75, Math.sin(a) * r * 0.8];
+    }
+    if (q < 0.53) { const d = randDir(); return [d[0] * 0.12, top + 0.1 + d[1] * 0.08, d[2] * 0.12]; } // button
+    return s(0.025);
+  });
+}

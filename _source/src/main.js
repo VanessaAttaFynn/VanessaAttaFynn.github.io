@@ -156,7 +156,7 @@ if (quick) {
 } else {
   const cnt = { v: 0 };
   intro
-    .to(cnt, { v: 100, duration: 1.6, ease: 'power2.inOut', onUpdate: () => { loaderNum.textContent = String(Math.round(cnt.v)).padStart(3, '0'); sound.loaderProgress(cnt.v / 100); } })
+    .to(cnt, { v: 100, duration: 1.6, ease: 'power2.inOut', onUpdate: () => { loaderNum.textContent = String(Math.round(cnt.v)).padStart(3, '0'); } })
     .to('.loader-bar i', { scaleX: 1, duration: 1.6, ease: 'power2.inOut' }, 0)
     .to('#loader', { yPercent: -100, duration: 1.1, ease: 'expo.inOut' }, '+=0.15');
 }

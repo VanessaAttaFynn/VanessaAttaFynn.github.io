@@ -35,7 +35,7 @@ def chrome(page, title, dots, body, desc):
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta name="theme-color" content="#0d0403">
-<link rel="stylesheet" href="assets/style.css?v=8">
+<link rel="stylesheet" href="assets/style.css?v=28">
 </head>
 <body data-page="{page}" data-title="{ {'home':'Vanessa','projects':'Projects','leadership':'Leadership','teaching':'Teaching','research':'Research','unofficial':'Unofficially'}[page] }">
 
@@ -71,7 +71,7 @@ def chrome(page, title, dots, body, desc):
 {body}
 </main>
 
-<script src="assets/app.js?v=8"></script>
+<script src="assets/app.js?v=28"></script>
 </body>
 </html>
 '''
@@ -120,82 +120,129 @@ pages['home'] = chrome('home', 'Vanessa Atta-Fynn — Systems Developer',
 p = hero('Projects', 'Selected &amp; full body <span class="serif">of work.</span>',
          "From a national regulator's compliance platform to a from-scratch research platform built for my university — the systems I've designed, built, and shipped, plus the ML work alongside it.")
 p += f'''
-<section class="proj left" id="ugabstracts" data-s="1">
+<section class="proj left" id="rbss" data-s="1">
   <div class="col">
-    <div class="kicker rv"><span class="idx">01</span> Production system, built solo</div>
-    <h2 class="display huge" data-split>UGAbstracts</h2>
-    {tags(['Yii2', 'PHP 8.4', 'SQL Server', 'IIS', 'Tailscale Funnel'])}
-    {prose(["The abstract review system built for the University of Ghana's DCS Postgraduate Research Conference (GRCW/DCS 2026). I was elected Chair of the committee that would use it — and when nothing existing fit the review workflow we needed, I built it myself.",
-            "It's a full workflow engine: rubric-based scoring, role-based access control, and automatic conflict-of-interest detection running across a five-stage review pipeline (Stages 0–4, with fan-out/fan-in assignment logic across thematic tracks). It runs on IIS, deployed to a VPS and exposed publicly via Tailscale Funnel.",
-            "Before opening it up to real reviewers, I hunted down and fixed a run of production-grade bugs under deadline pressure: a workflow conflict-resolution bug, intermittent PHP session failures, a unique index silently blocking legitimate null inserts, and an IIS hostname-binding issue that only showed up post-deploy.",
-            'It\'s the first system I\'ve taken solo from architecture through to a live server handling real submissions — and I did it while also chairing the committee and personally reviewing abstracts. More on that side of it on the <a href="leadership.html" data-label="Leadership">Leadership page</a>.'])}
-    {stats([(281, 'real submissions processed'), (7, 'thematic review tracks'), (15, 'abstracts personally reviewed as Chair'), (5, 'stage review pipeline')])}
+    <div class="kicker rv"><span class="idx">01</span> Day job · in production</div>
+    <h2 class="display huge" data-split>NPRA Risk-Based Supervision System <img class="hlogo" src="assets/npra.png" alt="NPRA logo"></h2>
+    <p class="tagline rv">The platform Ghana's National Pensions Regulatory Authority uses to supervise the pensions industry.</p>
+    <ul class="features glass rv">
+      <li><b>Submit regulatory returns</b><span>Corporate trustees, pension fund managers and custodians file their periodic returns online.</span></li>
+      <li><b>Apply and get approvals</b><span>Applications move through a staged review with the regulator, from submission to decision.</span></li>
+      <li><b>Risk-based supervision</b><span>NPRA reviews submissions, tracks compliance and assesses risk across the industry.</span></li>
+      <li><b>One channel to the industry</b><span>The regulator surveys and communicates with regulated entities from one place.</span></li>
+      <li><b>Guided from screen to screen</b><span>Built-in help and walkthroughs show users what to do on every page.</span></li>
+      <li><b>My role</b><span>I maintain and extend the system in production, onsite at NPRA.</span></li>
+    </ul>
+    <div class="plinks rv"><span class="private">Private system · details on request</span></div>
   </div>
 </section>
 
-<section class="proj right" id="dataforge" data-s="2">
+<section class="proj right" id="pde" data-s="2">
   <div class="col">
-    <div class="kicker rv"><span class="idx">02</span> Full platform, built for my university</div>
+    <div class="badge rv">In development</div>
+    <div class="kicker rv"><span class="idx">02</span> Day job · building now</div>
+    <h2 class="display huge" data-split>Pensions Digital Ecosystem <img class="hlogo" src="assets/npra.png" alt="NPRA logo"></h2>
+    <p class="tagline rv">NPRA's digital platform for pension scheme administration — with a mobile app for contributors.</p>
+    <ul class="features glass rv">
+      <li><b>Pensions in your pocket</b><span>Contributors will follow their pension information from their phones. I'm building the mobile app.</span></li>
+      <li><b>Scheme administration</b><span>Corporate trustees manage their pension schemes in one platform.</span></li>
+      <li><b>Returns made simple</b><span>Trustees generate, preview and download their regulatory returns straight from scheme data.</span></li>
+      <li><b>Built for national scale</b><span>Designed to work with millions of member records.</span></li>
+    </ul>
+    <div class="plinks rv"><span class="private">Private system · details on request</span></div>
+  </div>
+</section>
+
+<section class="proj left" id="ugabstracts" data-s="3">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">03</span> Production system</div>
+    <h2 class="display huge" data-split>UGAbstracts <img class="hlogo" src="assets/ug.png" alt="University of Ghana crest"></h2>
+    <p class="tagline rv">A configurable review-management platform for conferences and research events.</p>
+    {tags(['Yii2', 'PHP', 'Microsoft SQL Server', 'IIS'])}
+    <figure class="shot tilt rv"><div class="shot-bar"><i></i><i></i><i></i><span>ugabstracts</span></div><div class="shot-body"><img src="assets/shots/ugabstracts.png" alt="UGAbstracts screenshot" loading="lazy" onerror="this.parentNode.classList.add('missing')"><div class="shot-ph"><b>Screenshot goes here</b><span>assets/shots/ugabstracts.png</span></div></div></figure>
+    <ul class="features glass rv">
+      <li><b>Fully customizable workflows</b><span>Set up your own review stages, tasks and hand-offs — without code changes.</span></li>
+      <li><b>Role-based access</b><span>Admins, chairs, reviewers and authors each see only what they need.</span></li>
+      <li><b>Rubric-based scoring</b><span>Criteria you define, applied consistently across every reviewer.</span></li>
+      <li><b>Automatic conflict-of-interest detection</b><span>Reviewers never receive papers they shouldn't judge.</span></li>
+      <li><b>Automatic reviewer assignment</b><span>Submissions are routed to the right reviewers.</span></li>
+      <li><b>Proven in production</b><span>Ran a full university research conference end to end.</span></li>
+    </ul>
+    <div class="stats">
+      <div class="rv"><b data-count="284">0</b><span>submissions processed</span></div>
+      <div class="rv"><b class="word">Custom</b><span>fully configurable workflows</span></div>
+      <div class="rv"><b class="word">Live</b><span>deployed on a production server</span></div>
+    </div>
+    <div class="plinks rv"><a class="lbtn" href="https://vps-xfmi.tail6c12fa.ts.net/site/login" target="_blank" rel="noopener">Live demo ↗</a><span class="private">Code private</span></div>
+  </div>
+</section>
+
+<section class="proj right" id="dataforge" data-s="4">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">04</span> Full platform, built for my university</div>
     <h2 class="display huge" data-split>DataForge</h2>
-    {tags(['Yii2', 'SQL Server', 'Windows VPS', 'Cloudflare Tunnel'])}
-    {prose(["A Kaggle-style competitions and research platform, built from scratch for my university so students can create, discover, and register for challenges and hackathons — something that previously only existed as scattered WhatsApp messages and department flyers.",
-            "Under the hood it's architected as a blog system: every post carries a type — dataset, notebook, competition, or discussion — which keeps one clean data model powering four very different experiences. Datasets and discussions publish immediately (flagged unverified until reviewed); competitions and hackathons require approval first, since they carry real commitments to other students.",
-            "Teams are their own standalone entity: consent-based (invite and accept, no admin gatekeeping), able to register for multiple competitions independently, and automatically disbanded once membership hits zero. Each competition's creator sets its own submission cap, team-size limit, and whether it accepts individuals, teams, or both.",
-            "Notebooks are a static, read-only viewer for real uploaded .ipynb files — parsed and rendered code cells, markdown, and cached outputs, filterable by field, topic, and tags. Datasets preview CSVs directly in-browser; other file types show creator-supplied summary statistics instead.",
-            "Access is verification-gated: students authenticate with their university email, then submit a student ID and proof-of-registration document for admin approval before they can create or join anything. Staff accounts (on the university's staff domain) are auto-assigned moderator privileges at signup.",
-            "The whole thing is deployed on a Windows VPS matching my exact dev stack (IIS, SQL Server, PHP) — deliberately, so I wasn't re-fighting a fresh round of platform bugs right before the deadline, with grading running unattended and asynchronously. Public access runs through a Cloudflare Tunnel on the VPS itself, giving a stable URL that survives restarts."])}
+    {tags(['Yii2', 'PHP', 'Microsoft SQL Server', 'Windows VPS'])}
+    <figure class="shot tilt rv"><div class="shot-bar"><i></i><i></i><i></i><span>dataforge</span></div><div class="shot-body"><img src="assets/shots/dataforge.png" alt="DataForge screenshot" loading="lazy" onerror="this.parentNode.classList.add('missing')"><div class="shot-ph"><b>Screenshot goes here</b><span>assets/shots/dataforge.png</span></div></div></figure>
+    <p class="tagline rv">A competitions and research platform built for my university.</p>
+    <div class="ps">
+      <div class="glass rv"><small>The problem</small><p>Hackathons, challenges and datasets at my university were scattered across WhatsApp groups and department flyers. Students missed them, and organisers had no single place to run them.</p></div>
+      <div class="glass rv"><small>The solution</small><p>DataForge brings it all into one verified place where students discover, join and compete — and lecturers keep it trustworthy.</p></div>
+    </div>
+    <ul class="features glass rv">
+      <li><b>Competitions &amp; hackathons</b><span>Creators set submission limits, team sizes and who can enter. Each is approved before it goes live.</span></li>
+      <li><b>Teams</b><span>Invite and accept to form a team, join several competitions, and teams close automatically when empty.</span></li>
+      <li><b>Datasets</b><span>Publish datasets and preview CSV files right in the browser.</span></li>
+      <li><b>Notebooks</b><span>View real Jupyter notebooks — code, notes and outputs — filtered by field, topic and tags.</span></li>
+      <li><b>Discussions</b><span>An open space for questions and ideas, flagged until a moderator reviews them.</span></li>
+      <li><b>Verified students only</b><span>Students sign in with their university email, then submit their student ID and proof of registration. An admin approves them before they can create or join anything.</span></li>
+    </ul>
+    <div class="plinks rv"><a class="lbtn" href="https://vps-xfmi.tail6c12fa.ts.net:8443/site/login" target="_blank" rel="noopener">Live demo ↗</a><a class="lbtn" href="https://github.com/VanessaAttaFynn/DataForge" target="_blank" rel="noopener">GitHub ↗</a></div>
   </div>
 </section>
 
-<section class="proj left" id="ml" data-s="3">
+<section class="proj left" id="ml" data-s="5">
   <div class="col">
+    <figure class="shot tilt rv"><div class="shot-bar"><i></i><i></i><i></i><span>ml-results</span></div><div class="shot-body"><img src="assets/shots/ml.png" alt="Applied ML & CV screenshot" loading="lazy" onerror="this.parentNode.classList.add('missing')"><div class="shot-ph"><b>Screenshot goes here</b><span>assets/shots/ml.png</span></div></div></figure>
     <div class="mlcard glass tilt rv">
-      <div class="kicker"><span class="idx">03</span> Applied ML</div>
+      <div class="kicker"><span class="idx">05</span> Applied ML</div>
       <h2 class="display mid" data-split>VLM Image Captioning</h2>
       {tags(['EfficientNetB0', 'LSTM', 'Bahdanau Attention'])}
       <p>An image-captioning model pairing an EfficientNetB0 encoder with an LSTM decoder built entirely from scratch, using Bahdanau attention so the decoder learns which region of the image to focus on for each word it generates. Reached a BLEU-4 score of 0.179.</p>
       <div class="metric">BLEU-4 <b>0.179</b></div>
+      <div class="plinks"><a class="lbtn" href="javascript:void(0)" title="Link coming soon">Live demo ↗</a><a class="lbtn" href="javascript:void(0)" title="Link coming soon">GitHub ↗</a></div>
     </div>
     <div class="mlcard glass tilt rv">
-      <div class="kicker"><span class="idx">04</span> Applied ML</div>
+      <div class="kicker"><span class="idx">05</span> Applied ML</div>
       <h2 class="display mid" data-split>Loan Default Prediction</h2>
       {tags(['Random Forest', 'BorderlineSMOTE'])}
       <p>A classification model for predicting loan default, using BorderlineSMOTE rather than naive oversampling to address severe class imbalance near the decision boundary specifically. Achieved a ROC-AUC of 0.910.</p>
       <div class="metric">ROC-AUC <b>0.910</b></div>
+      <div class="plinks"><a class="lbtn" href="javascript:void(0)" title="Link coming soon">Live demo ↗</a><a class="lbtn" href="javascript:void(0)" title="Link coming soon">GitHub ↗</a></div>
+    </div>
+    <div class="mlcard glass tilt rv">
+      <div class="kicker"><span class="idx">05</span> Computer vision</div>
+      <h2 class="display mid" data-split>Coin Segmentation &amp; Measurement</h2>
+      {tags(['OpenCV', 'Thresholding', 'Region growing', 'K-means'])}
+      <p>A classical computer-vision system that segments, counts and measures coins in images, comparing thresholding, region growing and K-means clustering.</p>
+      <div class="plinks"><a class="lbtn" href="javascript:void(0)" title="Link coming soon">Live demo ↗</a><a class="lbtn" href="javascript:void(0)" title="Link coming soon">GitHub ↗</a></div>
     </div>
   </div>
 </section>
 
-<section class="proj right" id="tenant" data-s="4">
+<section class="proj right" id="tenant" data-s="6">
   <div class="col">
     <div class="badge rv">In progress · learning project</div>
-    <div class="kicker rv"><span class="idx">05</span> Personal project</div>
+    <div class="kicker rv"><span class="idx">06</span> Personal project</div>
     <h2 class="display huge" data-split>Tenant Management App</h2>
     {tags(['Django', 'SQLite', 'Python'])}
     {prose(["A management-only app (no client-facing side) for tracking tenants across a 3-room rental property, branded for my property under Fynn's Properties. It's also a deliberate excuse to properly learn Python and Django outside of a PHP-heavy day job.",
             "It generates downloadable, printable tenant agreements and receipts — signed physically, then filed against the tenant — and automates email notifications via Gmail. Part of the scope is also digitizing years of previous paper records into the same system."])}
   </div>
 </section>
-
-<section class="proj left" id="npra" data-s="5">
-  <div class="col">
-    <div class="kicker rv"><span class="idx">06</span> Day job, in production</div>
-    <h2 class="display huge" data-split>Engineering at NPRA</h2>
-    <p class="sub rv">Selected work on NPRA_RBSS, the regulatory compliance platform I maintain onsite at Ghana's National Pensions Regulatory Authority.</p>
-    <ul class="bullets glass rv">
-      <li>Designed and built the Formal Transfer of Pension Scheme Assets module: a multi-tab, multi-stage review workflow with per-tab approvals and admin-configurable stage logic.</li>
-      <li>Built a database-driven contextual help/manual widget system, plus a Driver.js-based guided onboarding walkthrough for new users.</li>
-      <li>Migrated SharePoint file-browsing integration from NTLM to OAuth2/Microsoft Graph.</li>
-      <li>Diagnosed and fixed a run of production bugs: a no-skip policy bug counting draft submissions as valid prior submissions, a period-not-set error on a specific return, a null-lookup bug in merger applications needing a two-step lookup, and a JS bug where review buttons always fired the wrong stage ID.</li>
-      <li>Fixed broadcast email failures by building RFC 2822-compliant address validation and failure logging.</li>
-      <li>Maintain Power BI dashboards and manage Git/deployment across local, server, and Azure DevOps environments.</li>
-    </ul>
-  </div>
-</section>
-''' + CONTACT_SUB.format(n=6, idx='07')
+''' + CONTACT_SUB.format(n=7, idx='07')
 pages['projects'] = chrome('projects', 'Projects — Vanessa Atta-Fynn',
-    [('top', 'Intro'), ('ugabstracts', 'UGAbstracts'), ('dataforge', 'DataForge'), ('ml', 'Applied ML'), ('tenant', 'Tenant app'), ('npra', 'NPRA'), ('contact', 'Contact')],
-    p, 'Projects by Vanessa Atta-Fynn — UGAbstracts, DataForge, applied ML and engineering at NPRA.')
+    [('top', 'Intro'), ('rbss', 'NPRA RBSS'), ('pde', 'PDE'), ('ugabstracts', 'UGAbstracts'), ('dataforge', 'DataForge'), ('ml', 'Applied ML & CV'), ('tenant', 'Tenant app'), ('contact', 'Contact')],
+    p, 'Projects by Vanessa Atta-Fynn — NPRA regulatory systems, the PDE mobile app, UGAbstracts, DataForge and applied ML.')
 
 # ---------------- LEADERSHIP ----------------
 l = hero('Leadership', 'Leading by building <span class="serif">the thing myself.</span>',
@@ -213,7 +260,7 @@ l += f'''
 <section class="proj right" id="framework" data-s="2">
   <div class="col">
     <div class="kicker rv"><span class="idx">02</span> The framework</div>
-    <h2 class="display big2" data-split>Designing how 281 abstracts get reviewed <span class="serif">fairly</span></h2>
+    <h2 class="display big2" data-split>Designing how 284 abstracts get reviewed <span class="serif">fairly</span></h2>
     {prose(["Before any review could happen, I designed the process itself: a multi-stage review framework (Stages 0–4) with fan-out/fan-in assignment logic, so abstracts could be distributed across reviewers by track and then reconciled back into final decisions.",
             "I wrote this up formally as a Plan of Action, which went through review by my supervising lecturer before the committee started work — and I ran the committee's first meeting to walk everyone through it."])}
   </div>
@@ -225,7 +272,7 @@ l += f'''
     <h2 class="display big2" data-split>When nothing fit, <span class="serif">I built it</span></h2>
     {prose(['Partway into planning, it became clear that no existing tool matched the review workflow the committee actually needed. So I built <a href="projects.html" data-label="Projects">UGAbstracts</a> — a full Yii2/SQL Server workflow engine with rubric scoring, role-based access, and automatic conflict-of-interest detection — and deployed it myself.',
             "I chaired the committee, wrote the process it followed, and built the software it ran on, all while personally reviewing 15 abstracts as Chair — alongside a full-time job and an MSc thesis running in parallel."])}
-    {stats([(281, 'abstracts processed'), (7, 'thematic tracks coordinated'), (15, 'reviewed personally'), (1, 'system built to run it')])}
+    {stats([(284, 'abstracts processed'), (7, 'thematic tracks coordinated'), (15, 'reviewed personally'), (1, 'system built to run it')])}
   </div>
 </section>
 
@@ -328,10 +375,11 @@ r += f"""
 
 <section class="proj right" id="caltransfer" data-s="4">
   <div class="col">
-    <div class="kicker rv"><span class="idx">04</span> Paper 03 — In preparation</div>
+    <div class="kicker rv"><span class="idx">04</span> Paper 03 — Under review</div>
     <h2 class="display huge" data-split>CAL-TRANSFER</h2>
-    <div class="paper wide rv"><div class="pidx">Paper 03</div><p>"Few-shot cross-GPU calibration of training-energy prediction"</p><span class="status alt">In preparation</span></div>
+    <div class="paper wide rv"><div class="pidx">Paper 03</div><p>"Few-Shot Cross-GPU Calibration for Neural Network Training Energy Prediction"</p><span class="status">Under review</span> <span class="venue">Springer Nature</span></div>
     <p class="quote rv">When a predictor moves to a new GPU, how few measured runs does it take to recalibrate it?</p>
+    <p class="note rv"><b>Builds on CAL-ENERGY:</b> CAL-ENERGY can flag when a request involves hardware it hasn't seen. CAL-TRANSFER adapts the predictor to that new GPU using only a handful of measured runs.</p>
   </div>
 </section>
 

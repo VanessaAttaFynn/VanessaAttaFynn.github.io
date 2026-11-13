@@ -9,14 +9,13 @@ const framework = S.makeNet([1, 4, 6, 4, 1], 6.8, 0.7);
 const resNet = S.makeNet([4, 7, 7, 3]);
 const pxd = S.makeNet([2, 1], 4.6, 2.6, 0.32);
 
-const loveNet = S.makeNet([4, 7, 7, 3]);
 
 export const PAGES = {
   unofficial: {
-    // hero · intro · fictional worlds · anime · CS · researcher · tomorrow · girl behind the screen
-    shapes: [S.heart, S.sphere, S.book, S.house, S.iris, loveNet.fn, S.tree, S.galaxy],
-    place: [[2.8, 0.1, 0.85, 0, 0.35], [-3.0, 0, 0.8, 0, 1], [3.0, 0, 0.82, -0.3, 0], [-3.0, 0.1, 0.9, 0.22, 1], [3.0, 0, 0.95, 0, 0.35], [-2.95, 0.1, 0.56, 0, 0], [3.0, 0.15, 0.9, 0, 0], [0, -0.3, 1.1, 1.08, 0.5]],
-    nets: [{ index: 5, net: loveNet }],
+    // hero · intro (castle) · fictional worlds · anime · CS · researcher · tomorrow · girl behind the screen
+    shapes: [S.heart, S.castle, S.book, S.house, S.iris, S.sprout, S.tree, S.galaxy],
+    place: [[2.8, 0.1, 0.85, 0, 0.35], [-3.15, -0.25, 0.62, 0.08, 0], [3.0, 0, 0.82, -0.3, 0], [-3.0, 0.1, 0.9, 0.22, 1], [3.0, 0, 0.95, 0, 0.35], [-3.0, 0, 0.85, 0.05, 0.3], [3.0, 0.15, 0.9, 0, 0], [0, -0.3, 1.1, 1.08, 0.5]],
+    nets: [],
   },
   research: {
     // intro · the question · SLR · CAL-ENERGY · CAL-TRANSFER · what's next · contact
@@ -33,10 +32,10 @@ export const PAGES = {
     wave: 2,
   },
   projects: {
-    // intro · UGAbstracts · DataForge · Applied ML · Tenant app · NPRA · contact
-    shapes: [S.clusters(6, 2.1, 0.55), pipeline.fn, S.cubes, S.iris, S.house, S.pillars, S.galaxy],
-    place: [[2.7, 0, 0.95, 0, 0.8], [2.95, 0.2, 0.56, 0, 0], [-3.1, 0, 0.95, 0.45, 1], [3.1, 0, 0.95, 0, 0.35], [-3.0, 0.1, 0.95, 0.22, 1], [3.0, -0.1, 0.9, 0.1, 0], [0, -0.3, 1.1, 1.08, 0.5]],
-    nets: [{ index: 1, net: pipeline }],
+    // intro · NPRA RBSS · PDE · UGAbstracts (grad cap) · DataForge · Applied ML & CV · Tenant app · contact
+    shapes: [S.clusters(6, 2.1, 0.55), S.pillars, S.phone, S.gradCap, S.cubes, S.iris, S.house, S.galaxy],
+    place: [[2.7, 0, 0.95, 0, 0.8], [2.8, -0.15, 0.74, 0.1, 0], [-3.05, 0, 0.82, 0.05, 0.25], [2.75, 0.25, 0.66, 0.42, 0], [-3.1, 0, 0.95, 0.45, 1], [3.1, 0, 0.95, 0, 0.35], [-3.0, 0.1, 0.95, 0.22, 1], [0, -0.3, 1.1, 1.08, 0.5]],
+    nets: [],
   },
   leadership: {
     // intro · the role · the framework · the build · reflection · contact
