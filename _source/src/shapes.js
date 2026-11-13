@@ -164,3 +164,35 @@ export function dbStack(N) {
   });
 }
 
+
+/* a puffy 3D heart */
+export function heart(N) {
+  return out(N, () => {
+    const t = rand(0, Math.PI * 2), shell = Math.random() < 0.8, s = shell ? 1 : Math.cbrt(Math.random());
+    const x = 16 * Math.pow(Math.sin(t), 3), y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+    const k = 0.135 * s, r = Math.hypot(x, y) / 17, z = (Math.random() < 0.5 ? -1 : 1) * Math.sqrt(Math.max(0, 1 - r * r)) * 0.9 * Math.random() ** (shell ? 0.15 : 1);
+    return [x * k + gauss() * 0.03, y * k + 0.35 + gauss() * 0.03, z];
+  });
+}
+/* a tree: trunk, branches and a leafy canopy (solarpunk) — mostly flat so it reads from the front */
+export function tree(N) {
+  const segs = [], tips = [];
+  function branch(a, len, ang, depth, w) {
+    const b = [a[0] + Math.sin(ang) * len, a[1] + Math.cos(ang) * len, a[2] + gauss() * 0.12];
+    segs.push([a, b, w]);
+    if (depth === 0) { tips.push(b); return; }
+    const n = depth > 3 ? 2 : 3;
+    for (let k = 0; k < n; k++) branch(b, len * 0.74, ang + (k - (n - 1) / 2) * 0.62 + gauss() * 0.1, depth - 1, w * 0.6);
+  }
+  branch([0, -2.6, 0], 1.25, 0, 5, 1);
+  const L = segs.map(([a, b, w]) => Math.hypot(b[0] - a[0], b[1] - a[1]) * (0.4 + w)), tot = L.reduce((x, y) => x + y, 0);
+  return out(N, () => {
+    if (Math.random() < 0.45) {
+      let r = Math.random() * tot, k = 0; while (r > L[k]) { r -= L[k]; k++; }
+      const [a, b, w] = segs[k], t = Math.random(), th = 0.05 + w * 0.09;
+      return [a[0] + (b[0] - a[0]) * t + gauss() * th, a[1] + (b[1] - a[1]) * t + gauss() * th, a[2] + (b[2] - a[2]) * t + gauss() * th];
+    }
+    const c = tips[Math.floor(Math.random() * tips.length)], d = randDir(), r = 0.38 * Math.cbrt(Math.random());
+    return [c[0] + d[0] * r, c[1] + d[1] * r * 0.8, c[2] + d[2] * r * 0.6];
+  });
+}

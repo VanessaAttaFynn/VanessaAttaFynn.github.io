@@ -9,7 +9,15 @@ const framework = S.makeNet([1, 4, 6, 4, 1], 6.8, 0.7);
 const resNet = S.makeNet([4, 7, 7, 3]);
 const pxd = S.makeNet([2, 1], 4.6, 2.6, 0.32);
 
+const loveNet = S.makeNet([4, 7, 7, 3]);
+
 export const PAGES = {
+  unofficial: {
+    // hero · intro · fictional worlds · anime · CS · researcher · tomorrow · girl behind the screen
+    shapes: [S.heart, S.sphere, S.book, S.house, S.iris, loveNet.fn, S.tree, S.galaxy],
+    place: [[2.8, 0.1, 0.85, 0, 0.35], [-3.0, 0, 0.8, 0, 1], [3.0, 0, 0.82, -0.3, 0], [-3.0, 0.1, 0.9, 0.22, 1], [3.0, 0, 0.95, 0, 0.35], [-2.95, 0.1, 0.56, 0, 0], [3.0, 0.15, 0.9, 0, 0], [0, -0.3, 1.1, 1.08, 0.5]],
+    nets: [{ index: 5, net: loveNet }],
+  },
   research: {
     // intro · the question · SLR · CAL-ENERGY · CAL-TRANSFER · what's next · contact
     shapes: [resNet.fn, S.grid, S.funnel, pxd.fn, S.cubes, S.dbStack, S.galaxy],

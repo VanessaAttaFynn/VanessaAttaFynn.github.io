@@ -18,12 +18,13 @@ fonts = ''.join([ff('Anton', 'anton/files/anton-latin-400-normal.woff2'),
 open(f'{D}/assets/style.css', 'w').write(fonts + open('/tmp/v3d/src/style.css').read() + open('/tmp/v3d/src/pages.css').read())
 
 NAV = [('Work', 'index.html#work', None), ('Projects', 'projects.html', 'projects'), ('Leadership', 'leadership.html', 'leadership'),
-       ('Teaching', 'teaching.html', 'teaching'), ('Research', 'research.html', 'research'), ('Contact', '#contact', None)]
+       ('Teaching', 'teaching.html', 'teaching'), ('Research', 'research.html', 'research'), ('Unofficially', 'unofficial.html', 'unofficial'), ('Contact', '#contact', None)]
 
 def chrome(page, title, dots, body, desc):
     links = []
     for label, href, key in NAV:
         if page == 'home' and href.startswith('index.html#'): href = href[len('index.html'):]
+        if page == 'unofficial' and href == '#contact': href = 'index.html#contact'
         links.append(f'<a href="{href}"{" class=cur" if key == page else ""} data-label="{label}">{label}</a>')
     dot_html = ''.join(f'<a href="#{i}"><span>{l}</span></a>' for i, l in dots)
     return f'''<!DOCTYPE html>
@@ -34,9 +35,9 @@ def chrome(page, title, dots, body, desc):
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta name="theme-color" content="#0d0403">
-<link rel="stylesheet" href="assets/style.css?v=6">
+<link rel="stylesheet" href="assets/style.css?v=8">
 </head>
-<body data-page="{page}" data-title="{ {'home':'Vanessa','projects':'Projects','leadership':'Leadership','teaching':'Teaching','research':'Research'}[page] }">
+<body data-page="{page}" data-title="{ {'home':'Vanessa','projects':'Projects','leadership':'Leadership','teaching':'Teaching','research':'Research','unofficial':'Unofficially'}[page] }">
 
 <div id="loader">
   <div class="l-top"><span>VAF</span><span>Portfolio — 2026</span></div>
@@ -63,13 +64,14 @@ def chrome(page, title, dots, body, desc):
   <div class="hud-sec"><b id="secnum">01</b> / <span id="sectot">06</span></div>
   <div class="hud-e"><span class="bolt">↯</span> <b id="energy">0.000</b> kWh <small>spent scrolling</small></div>
 </aside>
+<button class="sound-btn" id="sound" type="button" aria-pressed="false" aria-label="Toggle sound"><span class="sbars"><i></i><i></i><i></i><i></i></span><span class="s-label">Sound off</span></button>
 <aside class="dots">{dot_html}</aside>
 
 <main>
 {body}
 </main>
 
-<script src="assets/app.js?v=6"></script>
+<script src="assets/app.js?v=8"></script>
 </body>
 </html>
 '''
@@ -348,7 +350,75 @@ pages['research'] = chrome('research', 'Research — Vanessa Atta-Fynn',
     [('top', 'Intro'), ('question', 'The question'), ('review', 'Systematic review'), ('calenergy', 'CAL-ENERGY'), ('caltransfer', 'CAL-TRANSFER'), ('next', "What's next"), ('contact', 'Contact')],
     r, 'Research — a priori prediction of neural network training energy: systematic review, CAL-ENERGY and CAL-TRANSFER.')
 
-names = {'home': 'index.html', 'projects': 'projects.html', 'leadership': 'leadership.html', 'teaching': 'teaching.html', 'research': 'research.html'}
+
+# ---------------- UNOFFICIALLY (her own words, verbatim) ----------------
+import re as _re, html as _html
+def _inline(t):
+    t = _html.escape(t, quote=False)
+    t = _re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', t)
+    t = _re.sub(r'\*(.+?)\*', r'<em>\1</em>', t)
+    return t.replace('♡', '<span class="hrt">♡</span>')
+def _para(p):
+    raw = p.strip()
+    if raw.startswith('**') and raw.endswith('**') and raw.count('**') == 2:
+        return f'<p class="pull rv">{_inline(raw)}</p>'
+    if len(raw) <= 62:
+        return f'<p class="beat rv">{_inline(raw)}</p>'
+    return f'<p class="rv">{_inline(raw)}</p>'
+md = open('/tmp/v3d/src/unofficial.md', encoding='utf-8').read().strip().split('\n')
+title = md[0].lstrip('# ').strip()
+sub = md[1].strip().strip('*')
+blocks, cur = [], {'h': None, 'ps': []}
+buf = []
+def _flush():
+    if buf: cur['ps'].append(' '.join(buf)); buf.clear()
+for line in md[2:]:
+    if line.startswith('## '):
+        _flush(); blocks.append(cur); cur = {'h': line[3:].strip(), 'ps': []}
+    elif not line.strip(): _flush()
+    else: buf.append(line.strip())
+_flush(); blocks.append(cur)
+intro = blocks[0]['ps']
+hello = intro[0]
+title_html = _inline(title).replace('About Me <span class="hrt">♡</span>', '<span class="serif">About Me ♡</span>')
+u = f"""
+<section class="hero phero soft" id="top" data-s="0">
+  <div class="hero-inner">
+    <a href="index.html" class="back rv" data-label="Home">← Back home</a>
+    <div class="kicker rv">Unofficially</div>
+    <h1 class="display mega" data-split>{title_html}</h1>
+    <p class="lede rv"><em>{_inline(sub)}</em></p>
+    <p class="hello rv">{_inline(hello)}</p>
+  </div>
+  <div class="scroll-hint rv"><i></i>Scroll</div>
+</section>
+"""
+secs = [('intro', None, intro[1:])] + [(_re.sub(r'[^a-z]+', '-', b['h'].lower()).strip('-'), b['h'], b['ps']) for b in blocks[1:]]
+dots = [('top', 'Hello')]
+for i, (sid, h, ps) in enumerate(secs, start=1):
+    side = 'left' if i % 2 == 0 else 'right'
+    if side == 'right': side = 'right'
+    sign = ''
+    if ps and ps[-1].startswith('*Just a girl'):
+        sign = f'<div class="signoff rv"><span>{_inline(ps[-2])}</span><span>{_inline(ps[-1])}</span></div>'
+        ps = ps[:-2]
+    head = f'<h2 class="soft-h" data-split>{_inline(h)}</h2>' if h else ''
+    body = ''.join(_para(p) for p in ps)
+    u += f"""
+<section class="proj {side} soft" id="{sid}" data-s="{i}">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">{i:02d}</span></div>
+    {head}
+    <div class="letter glass">{body}{sign}</div>
+  </div>
+</section>
+"""
+    dots.append((sid, h.split(' and ')[0] if h else 'Where do I begin?'))
+u += '\n<footer class="soft-foot"><span>Tantra Hill, Accra, Ghana</span><span>© 2026 Vanessa Atta-Fynn</span></footer>\n'
+pages['unofficial'] = chrome('unofficial', 'A Little More About Me — Vanessa Atta-Fynn', dots, u,
+    'A little more about Vanessa Atta-Fynn — the stories, worlds and dreams behind the work.')
+
+names = {'home': 'index.html', 'projects': 'projects.html', 'leadership': 'leadership.html', 'teaching': 'teaching.html', 'research': 'research.html', 'unofficial': 'unofficial.html'}
 for k, html in pages.items():
     open(f'{D}/{names[k]}', 'w').write(html)
 print('ok', {k: len(v) for k, v in pages.items()}, os.path.getsize(f'{D}/assets/app.js') // 1024, 'KB js')

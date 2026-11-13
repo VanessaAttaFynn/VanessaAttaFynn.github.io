@@ -4,10 +4,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { createScene } from './scene.js';
 import { PAGES } from './pages.js';
+import { createSound } from './sound.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const page = PAGES[document.body.dataset.page] || PAGES.home;
+const sound = createSound();
 const isMobile = matchMedia('(max-width: 860px)').matches;
 const isTouch = matchMedia('(hover: none)').matches;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -34,6 +36,7 @@ document.querySelectorAll('a[href]').forEach((a) => {
     loader.querySelector('.l-num').textContent = '000';
     loader.querySelector('.l-label').textContent = 'Initialising network';
     gsap.set('.loader-bar i', { scaleX: 0 });
+    sound.leave();
     gsap.fromTo(loader, { yPercent: 100 }, { yPercent: 0, duration: 0.75, ease: 'expo.inOut', onComplete: () => { location.href = href; } });
   });
 });
@@ -110,6 +113,7 @@ gsap.ticker.add(() => {
   if (hudE) hudE.textContent = (p * 0.742).toFixed(3);
   const sec = Math.round(st.morph);
   if (sec !== currentSec) {
+    if (currentSec !== -1) sound.setSection(sec);
     currentSec = sec;
     if (hudN) hudN.textContent = String(sec + 1).padStart(2, '0');
     dots.forEach((d, j) => d.classList.toggle('on', j === sec));
@@ -152,7 +156,7 @@ if (quick) {
 } else {
   const cnt = { v: 0 };
   intro
-    .to(cnt, { v: 100, duration: 1.6, ease: 'power2.inOut', onUpdate: () => { loaderNum.textContent = String(Math.round(cnt.v)).padStart(3, '0'); } })
+    .to(cnt, { v: 100, duration: 1.6, ease: 'power2.inOut', onUpdate: () => { loaderNum.textContent = String(Math.round(cnt.v)).padStart(3, '0'); sound.loaderProgress(cnt.v / 100); } })
     .to('.loader-bar i', { scaleX: 1, duration: 1.6, ease: 'power2.inOut' }, 0)
     .to('#loader', { yPercent: -100, duration: 1.1, ease: 'expo.inOut' }, '+=0.15');
 }
@@ -192,7 +196,7 @@ if (!isTouch) {
   const qx = gsap.quickTo(ring, 'x', { duration: 0.45, ease: 'power3' }), qy = gsap.quickTo(ring, 'y', { duration: 0.45, ease: 'power3' });
   addEventListener('pointermove', (e) => { gsap.set(dot, { x: e.clientX, y: e.clientY }); qx(e.clientX); qy(e.clientY); });
   document.querySelectorAll('a, button, .tilt').forEach((el) => {
-    el.addEventListener('pointerenter', () => document.body.classList.add('hovering'));
+    el.addEventListener('pointerenter', () => { document.body.classList.add('hovering'); sound.tick(true); });
     el.addEventListener('pointerleave', () => document.body.classList.remove('hovering'));
   });
   document.querySelectorAll('.mag').forEach((el) => {
@@ -211,4 +215,12 @@ if (!isTouch) {
 
 /* ---------------- nav state ---------------- */
 const nav = document.querySelector('nav');
-lenis.on('scroll', ({ scroll }) => nav.classList.toggle('scrolled', scroll > 60));
+lenis.on('scroll', ({ scroll, velocity }) => { nav.classList.toggle('scrolled', scroll > 60); sound.scrollVelocity(velocity || 0); });
+
+/* ---------------- sound toggle ---------------- */
+const sbtn = document.getElementById('sound');
+if (sbtn) {
+  const label = () => { sbtn.querySelector('.s-label').textContent = sound.on ? 'Sound on' : 'Sound off'; sbtn.setAttribute('aria-pressed', sound.on); };
+  label();
+  sbtn.addEventListener('click', () => { sound.toggle(); label(); });
+}
