@@ -11,6 +11,12 @@ const pxd = S.makeNet([2, 1], 4.6, 2.6, 0.32);
 
 
 export const PAGES = {
+  education: {
+    // education cards: shape shrunk to nothing so it never sits behind the cards · contact: galaxy
+    shapes: [S.galaxy, S.galaxy],
+    place: [[0, -9, 0.2, 1.08, 0.5], [0, -0.3, 1.1, 1.08, 0.5]],
+    nets: [],
+  },
   unofficial: {
     // hero · intro (castle) · fictional worlds · anime · CS · researcher · tomorrow · girl behind the screen
     shapes: [S.heart, S.castle, S.book, S.house, S.iris, S.sprout, S.tree, S.galaxy],
@@ -38,10 +44,10 @@ export const PAGES = {
     nets: [],
   },
   leadership: {
-    // intro · the role · the framework · the build · reflection · contact
-    shapes: [S.star, S.clusters(7, 2.1, 0.42), framework.fn, S.cubes, S.lemniscate, S.galaxy],
-    place: [[2.7, 0, 0.9, 0, 0], [2.9, 0, 0.85, 0, 0], [-2.95, 0.1, 0.56, 0, 0], [2.9, 0, 0.8, 0.45, 1], [2.9, 0, 0.62, 0.2, 0.5], [0, -0.3, 1.1, 1.08, 0.5]],
-    nets: [{ index: 2, net: framework }],
+    // intro · role · team (ribbon) · pressure (funnel) · tools (cubes) · course rep (two groups) · reflection · contact
+    shapes: [S.star, S.clusters(6, 2.1, 0.42), S.ribbon, S.funnel, S.cubes, S.twoGroups, S.lemniscate, S.galaxy],
+    place: [[2.7, 0, 0.9, 0, 0], [2.9, 0, 0.85, 0, 0], [-2.75, 0.05, 0.76, 0.5, 0.6], [3.0, 0, 0.88, 0.25, 1], [-2.9, 0, 0.8, 0.45, 1], [2.85, 0, 0.7, 0, 0.5], [-2.9, 0, 0.62, 0.2, 0.5], [0, -0.3, 1.1, 1.08, 0.5]],
+    nets: [],
   },
   teaching: {
     // intro · two groups · case study · approach · contact

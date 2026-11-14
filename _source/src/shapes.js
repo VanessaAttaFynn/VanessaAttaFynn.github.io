@@ -309,3 +309,22 @@ export function gradCap(N) {
     return s(0.025);
   });
 }
+
+// one bright core surrounded by a ring of 17 small clusters, joined by faint spokes (leading a team)
+export const council = (k = 17, R = 2.5) => (N) => out(N, () => {
+  const u = Math.random();
+  if (u < 0.2) { const d = randDir(), r = Math.pow(Math.random(), 0.6) * 0.55; return [d[0] * r, d[1] * r, d[2] * r]; }
+  const j = Math.floor(Math.random() * k), a = (j / k) * Math.PI * 2, cx = Math.cos(a) * R, cz = Math.sin(a) * R, cy = Math.sin(a * 3) * 0.18;
+  if (u < 0.72) { const d = randDir(), r = Math.pow(Math.random(), 0.8) * 0.2; return [cx + d[0] * r, cy + d[1] * r, cz + d[2] * r]; }
+  if (u < 0.88) { const t = rand(0, Math.PI * 2); return [Math.cos(t) * R + gauss() * 0.03, Math.sin(t * 3) * 0.18 + gauss() * 0.03, Math.sin(t) * R + gauss() * 0.03]; }
+  const t = rand(0.12, 0.92); return [cx * t + gauss() * 0.02, cy * t + gauss() * 0.02, cz * t + gauss() * 0.02];
+});
+
+// soft torus (donut) of dots
+export const torus = (N) => out(N, () => { const u = rand(0, Math.PI * 2), v = rand(0, Math.PI * 2), R = 2.1, r = 0.75 + gauss() * 0.04; return [(R + r * Math.cos(v)) * Math.cos(u), r * Math.sin(v), (R + r * Math.cos(v)) * Math.sin(u)]; });
+
+// swirling vortex: arms spiralling into a bright centre, rising into a funnel
+export const vortex = (N) => out(N, (i) => { const r = Math.pow(Math.random(), 0.55) * 3.2, arm = (i % 4) * (Math.PI / 2), a = arm + r * 1.4 + gauss() * 0.12; return [Math.cos(a) * r, (3.2 - r) * 0.45 - 0.7 + gauss() * 0.05, Math.sin(a) * r]; });
+
+// flowing ribbon: a twisted silk band
+export const ribbon = (N) => out(N, () => { const t = rand(-1, 1), w = rand(-1, 1) * 0.55, x = t * 3.4, tw = t * Math.PI * 1.2; return [x, Math.sin(t * Math.PI * 1.5) * 0.9 + Math.cos(tw) * w, Math.sin(tw) * w + Math.cos(t * Math.PI) * 0.5]; });

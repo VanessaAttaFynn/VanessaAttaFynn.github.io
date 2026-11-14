@@ -17,8 +17,8 @@ fonts = ''.join([ff('Anton', 'anton/files/anton-latin-400-normal.woff2'),
                  ff('Inter', 'inter/files/inter-latin-600-normal.woff2', w=600), ff('Inter', 'inter/files/inter-latin-700-normal.woff2', w=700)])
 open(f'{D}/assets/style.css', 'w').write(fonts + open('/tmp/v3d/src/style.css').read() + open('/tmp/v3d/src/pages.css').read())
 
-NAV = [('Work', 'index.html#work', None), ('Projects', 'projects.html', 'projects'), ('Leadership', 'leadership.html', 'leadership'),
-       ('Teaching', 'teaching.html', 'teaching'), ('Research', 'research.html', 'research'), ('Unofficially', 'unofficial.html', 'unofficial'), ('Contact', '#contact', None)]
+NAV = [('Projects', 'projects.html', 'projects'), ('Leadership', 'leadership.html', 'leadership'),
+       ('Teaching', 'teaching.html', 'teaching'), ('Research', 'research.html', 'research'), ('Education', 'education.html', 'education'), ('Unofficial', 'unofficial.html', 'unofficial'), ('Contact', '#contact', None)]
 
 def chrome(page, title, dots, body, desc):
     links = []
@@ -35,9 +35,9 @@ def chrome(page, title, dots, body, desc):
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <meta name="theme-color" content="#0d0403">
-<link rel="stylesheet" href="assets/style.css?v=28">
+<link rel="stylesheet" href="assets/style.css?v=44">
 </head>
-<body data-page="{page}" data-title="{ {'home':'Vanessa','projects':'Projects','leadership':'Leadership','teaching':'Teaching','research':'Research','unofficial':'Unofficially'}[page] }">
+<body data-page="{page}" data-title="{ {'home':'Vanessa','projects':'Projects','leadership':'Leadership','teaching':'Teaching','research':'Research','education':'Education','unofficial':'Unofficial'}[page] }">
 
 <div id="loader">
   <div class="l-top"><span>VAF</span><span>Portfolio — 2026</span></div>
@@ -71,7 +71,7 @@ def chrome(page, title, dots, body, desc):
 {body}
 </main>
 
-<script src="assets/app.js?v=28"></script>
+<script src="assets/app.js?v=44"></script>
 </body>
 </html>
 '''
@@ -245,60 +245,77 @@ pages['projects'] = chrome('projects', 'Projects — Vanessa Atta-Fynn',
     p, 'Projects by Vanessa Atta-Fynn — NPRA regulatory systems, the PDE mobile app, UGAbstracts, DataForge and applied ML.')
 
 # ---------------- LEADERSHIP ----------------
-l = hero('Leadership', 'Leading by building <span class="serif">the thing myself.</span>',
-         "In 2026 I was elected Chair of the Abstract Review Committee for my university's DCS Postgraduate Research Conference — and ended up building the entire system the committee ran on.")
+l = hero('Leadership', 'Keeping a conference <span class="serif">on schedule.</span>',
+         "In 2026 I was elected Chair of the Abstract Review Committee for my department's Postgraduate Research Conference &amp; Workshop — leading 17 postgraduate reviewers through 284 submissions, from the first plan to the final Book of Abstracts. During my MSc I was also course representative for two courses.")
 l += f'''
 <section class="proj left" id="role" data-s="1">
   <div class="col">
     <div class="kicker rv"><span class="idx">01</span> The role</div>
-    <h2 class="display huge" data-split>Elected Chairperson</h2>
-    {prose(["I ran for and won the Chairperson election for the Abstract Review Committee of the GRCW/DCS 2026 postgraduate research conference, with Prince Amofa elected Vice Chairperson alongside me.",
-            "The committee was responsible for reviewing every abstract submitted to the conference across multiple thematic research tracks — from Machine Learning and Data Science to HCI, Networks, and Cybersecurity — before the conference could go ahead."])}
+    <h2 class="display huge" data-split>Elected Chair</h2>
+    {prose(["I was elected Chair of a 17-member Abstract Review Committee responsible for the conference's entire abstract pipeline: submission, peer review, selection, and the Book of Abstracts.",
+            "Before any review began, I wrote the committee's Plan of Action and Terms of Reference and got them approved. As the work moved forward, I reported our progress to the conference's Advisory Committee and updated the plan on the feedback we received."])}
   </div>
 </section>
 
-<section class="proj right" id="framework" data-s="2">
+<section class="proj right" id="team" data-s="2">
   <div class="col">
-    <div class="kicker rv"><span class="idx">02</span> The framework</div>
-    <h2 class="display big2" data-split>Designing how 284 abstracts get reviewed <span class="serif">fairly</span></h2>
-    {prose(["Before any review could happen, I designed the process itself: a multi-stage review framework (Stages 0–4) with fan-out/fan-in assignment logic, so abstracts could be distributed across reviewers by track and then reconciled back into final decisions.",
-            "I wrote this up formally as a Plan of Action, which went through review by my supervising lecturer before the committee started work — and I ran the committee's first meeting to walk everyone through it."])}
+    <div class="kicker rv"><span class="idx">02</span> Leading the team</div>
+    <h2 class="display big2" data-split>Seventeen reviewers, <span class="serif">one standard</span></h2>
+    {prose(["I onboarded the committee, ran our weekly meetings, and walked everyone through how the review would work. Together we agreed the rubrics, the pass marks and the tools we would use, so every abstract was judged the same way.",
+            "I organised and oversaw the double-blind peer review sessions — a two-stage pipeline of initial screening (plagiarism, theme and file checks) followed by an academic quality review — and kept the team moving until every review was in."])}
   </div>
 </section>
 
-<section class="proj left" id="build" data-s="3">
+<section class="proj left" id="pressure" data-s="3">
   <div class="col">
-    <div class="kicker rv"><span class="idx">03</span> The build</div>
-    <h2 class="display big2" data-split>When nothing fit, <span class="serif">I built it</span></h2>
-    {prose(['Partway into planning, it became clear that no existing tool matched the review workflow the committee actually needed. So I built <a href="projects.html" data-label="Projects">UGAbstracts</a> — a full Yii2/SQL Server workflow engine with rubric scoring, role-based access, and automatic conflict-of-interest detection — and deployed it myself.',
-            "I chaired the committee, wrote the process it followed, and built the software it ran on, all while personally reviewing 15 abstracts as Chair — alongside a full-time job and an MSc thesis running in parallel."])}
-    {stats([(284, 'abstracts processed'), (7, 'thematic tracks coordinated'), (15, 'reviewed personally'), (1, 'system built to run it')])}
+    <div class="kicker rv"><span class="idx">03</span> When things went wrong</div>
+    <h2 class="display big2" data-split>Pressure, <span class="serif">handled</span></h2>
+    {prose(["The submission portal opened late, so the deadline moved back two weeks — and about 80% of the 284 abstracts arrived on or around the new deadline, leaving only days to review them all.",
+            "Midway through review, the plagiarism checker went down. I switched the team to a backup tool so screening could continue without losing time. I then coordinated with the Programmes Committee to allocate 150 oral and 134 poster slots, and delivered the Book of Abstracts before the conference opened."])}
   </div>
 </section>
 
-<section class="proj left" id="reflection" data-s="4">
+<section class="proj right" id="build" data-s="4">
   <div class="col">
-    <div class="kicker rv"><span class="idx">04</span> Reflection</div>
+    <div class="kicker rv"><span class="idx">04</span> The tools</div>
+    <h2 class="display big2" data-split>Building what the team <span class="serif">needed</span></h2>
+    {prose(['No existing tool fit the workflow we had agreed, so I built <a href="projects.html" data-label="Projects">UGAbstracts</a>, the review system the committee worked in, and a live scoring module that lecturers and panelists used to score presentations during the conference.'])}
+    {stats([(284, 'abstracts received'), (257, 'abstracts accepted'), (504, 'reviews completed'), (17, 'reviewers led')])}
+  </div>
+</section>
+
+<section class="proj left" id="courserep" data-s="5">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">05</span> Course representative</div>
+    <h2 class="display big2" data-split>The link between lecturers <span class="serif">and the class</span></h2>
+    {prose(["During my MSc I was course representative for <b class=\"course\">Advanced Data Visualization</b>, taught by Prof. Kofi Sarpong Adu-Manu, and <b class=\"course\">Advanced Computer Vision</b>, taught by Prof. Ebenezer Owusu, Head of Department.",
+            "I kept information flowing between lecturers and students, sent reminders, scheduled classes and exam timetables, and organised and oversaw peer review sessions."])}
+  </div>
+</section>
+
+<section class="proj right" id="reflection" data-s="6">
+  <div class="col">
+    <div class="kicker rv"><span class="idx">06</span> Reflection</div>
     <h2 class="display big2" data-split>What it actually <span class="serif">took</span></h2>
-    <p class="quote rv">Chairing a committee is a governance job — framework, fairness, meetings, decisions. Building the platform underneath it is an engineering job. Doing both at once meant every gap in the process became a bug I had to fix myself, and every technical constraint became something I had to explain and defend to the committee. That loop — between designing a process and building the tool that enforces it — is the part of this I'd sign up for again.</p>
+    <p class="quote rv">Leading fellow students meant there was no authority to lean on — only preparation and follow-through. I tried to stay a step ahead: plans written before they were needed, decisions made together in the room, and problems solved before they became the team's problem. Most of what leadership looked like was invisible: the reminders, the rescheduling, and the quiet fixes that kept everyone else moving.</p>
   </div>
 </section>
-''' + CONTACT_SUB.format(n=5, idx='05')
+''' + CONTACT_SUB.format(n=7, idx='07')
 pages['leadership'] = chrome('leadership', 'Leadership — Vanessa Atta-Fynn',
-    [('top', 'Intro'), ('role', 'The role'), ('framework', 'Framework'), ('build', 'The build'), ('reflection', 'Reflection'), ('contact', 'Contact')],
-    l, 'Leadership — Chair of the Abstract Review Committee, GRCW/DCS 2026.')
+    [('top', 'Intro'), ('role', 'The role'), ('team', 'The team'), ('pressure', 'Pressure'), ('build', 'The tools'), ('courserep', 'Course rep'), ('reflection', 'Reflection'), ('contact', 'Contact')],
+    l, 'Leadership — Chair of a 17-member conference abstract review committee, and MSc course representative.')
 
 # ---------------- TEACHING ----------------
 t = hero('Teaching', "Turning technical skills into <span class=\"serif\">other people's skills.</span>",
-         "Alongside development work, I've taught four students so far — across two very different groups, with very different goals.")
+         "Alongside development work, I've taught seven students so far — six kids and one adult. I teach whatever I'm asked to.")
 t += f'''
 <section class="proj left" id="overview" data-s="1">
   <div class="col">
     <div class="kicker rv"><span class="idx">01</span> Overview</div>
     <h2 class="display big2" data-split>Two groups, <span class="serif">two goals</span></h2>
     <div class="groups">
-      <div class="group glass tilt rv"><div class="gnum">01</div><h3>Young adults (11–20)</h3><p>Web development fundamentals — HTML, CSS, JavaScript, and Python — for students building their first real technical skills.</p></div>
-      <div class="group glass tilt rv"><div class="gnum">02</div><h3>Professionals (30–45)</h3><p>Professional-level Microsoft Office proficiency — Word, PowerPoint, and Excel — for working adults adding new skills mid-career.</p></div>
+      <div class="group glass tilt rv"><div class="gnum">01</div><h3>Kids (6)</h3><p>Coding fundamentals — HTML, CSS, JavaScript and Python — plus Microsoft Office, including Excel. Most of my teaching has been here.</p></div>
+      <div class="group glass tilt rv"><div class="gnum">02</div><h3>Adults (1)</h3><p>MySQL and the basics of web technologies.</p></div>
     </div>
   </div>
 </section>
@@ -307,8 +324,8 @@ t += f'''
   <div class="col">
     <div class="kicker rv"><span class="idx">02</span> Case study</div>
     <h2 class="display big2" data-split>A six-week intensive, <span class="serif">built from scratch</span></h2>
-    {prose(["My most recent engagement is a six-week course for an 18-year-old student, covering both the Microsoft Office suite and Python, at four sessions a week.",
-            "Rather than teach from generic material, I built a custom slide-deck design system for the course — a consistent dark navy and orange visual identity, generated programmatically with pptxgenjs so every session's materials look professionally consistent rather than assembled ad hoc."])}
+    {prose(["My most recent engagement is a six-week course taken by four students aged roughly 12 to 18, covering both the Microsoft Office suite and Python, at three to four sessions a week.",
+            "On top of teaching the course itself — with regular assignments, weekly project work and weekend practice sessions, usually one to two hours on Saturdays — I mentored each of them one-on-one, with custom slides and supplementary material. I walked them through installing their tools and finding their way around code editors and IDEs, then taught them to run and debug code on their own.", "I also taught them how to research the problems they hit — on Stack Overflow and similar forums — instead of leaning heavily on AI assistants while they're still beginners."])}
   </div>
 </section>
 
@@ -316,13 +333,13 @@ t += f'''
   <div class="col">
     <div class="kicker rv"><span class="idx">03</span> Approach</div>
     <h2 class="display big2" data-split>Why this, alongside <span class="serif">everything else</span></h2>
-    <p class="quote rv">Teaching forces a different discipline than building systems does: you can't ship something a student doesn't understand and call it done. It's the same instinct that shows up in the contextual help systems I've built at work — the belief that good documentation and good teaching are really the same skill, aimed at different audiences.</p>
+    <p class="quote rv">Teaching forces a different discipline than building systems does: you can't ship something a student doesn't understand and call it done. It's the same instinct that shows up in the contextual help systems I've built at work — the belief that good documentation and good teaching are really the same skill, aimed at different audiences. I'm not tied to one age group or one subject — if I know it, I'll teach it.</p>
   </div>
 </section>
 ''' + CONTACT_SUB.format(n=4, idx='04')
 pages['teaching'] = chrome('teaching', 'Teaching — Vanessa Atta-Fynn',
     [('top', 'Intro'), ('overview', 'Overview'), ('case', 'Case study'), ('approach', 'Approach'), ('contact', 'Contact')],
-    t, 'Teaching — web development and Microsoft Office training for young adults and professionals.')
+    t, 'Teaching — coding, Microsoft Office and database training for kids and adults.')
 
 
 # ---------------- RESEARCH ----------------
@@ -433,7 +450,7 @@ u = f"""
 <section class="hero phero soft" id="top" data-s="0">
   <div class="hero-inner">
     <a href="index.html" class="back rv" data-label="Home">← Back home</a>
-    <div class="kicker rv">Unofficially</div>
+    <div class="kicker rv">Unofficial</div>
     <h1 class="display mega" data-split>{title_html}</h1>
     <p class="lede rv"><em>{_inline(sub)}</em></p>
     <p class="hello rv">{_inline(hello)}</p>
@@ -466,7 +483,22 @@ u += '\n<footer class="soft-foot"><span>Tantra Hill, Accra, Ghana</span><span>©
 pages['unofficial'] = chrome('unofficial', 'A Little More About Me — Vanessa Atta-Fynn', dots, u,
     'A little more about Vanessa Atta-Fynn — the stories, worlds and dreams behind the work.')
 
-names = {'home': 'index.html', 'projects': 'projects.html', 'leadership': 'leadership.html', 'teaching': 'teaching.html', 'research': 'research.html', 'unofficial': 'unofficial.html'}
+# ---------------- EDUCATION ----------------
+import sys; sys.path.insert(0, '/tmp/v3d/src'); from edu_parts import MSC, BSC, CERTS
+e = f'''
+<section class="edu-page" id="top" data-s="0">
+  <div class="edu-wrap">
+    <div class="kicker rv">Education &amp; training</div>
+    <h2 class="display" data-split>Where I <span class="serif">learned to learn.</span></h2>
+    <div class="edu-tl">{MSC}{BSC}{CERTS}</div>
+  </div>
+</section>
+''' + CONTACT_SUB.format(n=1, idx='01')
+pages['education'] = chrome('education', 'Education — Vanessa Atta-Fynn',
+    [('top', 'Education'), ('contact', 'Contact')],
+    e, 'Education — MSc and BSc in Computer Science, University of Ghana, plus certifications and training.')
+
+names = {'home': 'index.html', 'projects': 'projects.html', 'leadership': 'leadership.html', 'teaching': 'teaching.html', 'research': 'research.html', 'education': 'education.html', 'unofficial': 'unofficial.html'}
 for k, html in pages.items():
     open(f'{D}/{names[k]}', 'w').write(html)
 print('ok', {k: len(v) for k, v in pages.items()}, os.path.getsize(f'{D}/assets/app.js') // 1024, 'KB js')

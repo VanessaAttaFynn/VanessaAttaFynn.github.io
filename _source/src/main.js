@@ -33,8 +33,9 @@ document.querySelectorAll('a[href]').forEach((a) => {
   a.addEventListener('click', (e) => {
     if (e.metaKey || e.ctrlKey || e.shiftKey) return;
     e.preventDefault();
-    loader.querySelector('.l-num').textContent = '000';
-    loader.querySelector('.l-label').textContent = 'Initialising network';
+    const toHome = /^index\.html/.test(href);
+    loader.querySelector('.l-num').textContent = toHome ? '000' : '';
+    loader.querySelector('.l-label').textContent = toHome ? 'Initialising network' : '';
     gsap.set('.loader-bar i', { scaleX: 0 });
     sound.leave();
     gsap.fromTo(loader, { yPercent: 100 }, { yPercent: 0, duration: 0.75, ease: 'expo.inOut', onComplete: () => { location.href = href; } });
@@ -118,7 +119,7 @@ gsap.ticker.add(() => {
     if (hudN) hudN.textContent = String(sec + 1).padStart(2, '0');
     dots.forEach((d, j) => d.classList.toggle('on', j === sec));
   }
-  S.renderer.render(S.scene, S.camera);
+  if (!page.noGL) S.renderer.render(S.scene, S.camera);
 });
 
 /* ---------------- text splitting ---------------- */
@@ -146,13 +147,14 @@ document.querySelectorAll('[data-chars]').forEach((el) => {
 
 /* ---------------- intro ---------------- */
 const loaderNum = document.getElementById('lnum');
-const quick = reduce;
+const isHome = document.body.dataset.page === 'home';
+const quick = reduce || !isHome;
 const intro = gsap.timeline({ paused: true });
 if (quick) {
   loaderNum.textContent = document.body.dataset.title || '';
   document.querySelector('.l-label').textContent = '';
   gsap.set('.loader-bar i', { scaleX: 1 });
-  intro.to('#loader', { yPercent: -100, duration: 0.95, ease: 'expo.inOut', delay: 0.25 });
+  intro.to('#loader', { yPercent: -100, duration: isHome ? 0.95 : 0.8, ease: 'expo.inOut', delay: isHome ? 0.25 : 0.05 });
 } else {
   const cnt = { v: 0 };
   intro
